@@ -14,8 +14,7 @@ SECRET_KEY = 'django-insecure-0cukc0a$x282%@riil!poo4nj^s$8d-_7n94^h@)s_6y6eo3y*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'testserver']
-
+ALLOWED_HOSTS = ['newbakery-production.up.railway.app', '127.0.0.1', 'localhost']
 
 # Application definition
 INSTALLED_APPS = [
