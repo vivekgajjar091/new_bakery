@@ -57,10 +57,16 @@ WSGI_APPLICATION = 'bakehouse.wsgi.application'
 ## SECURITY WARNING: keep the secret key used in production secret! SECRET_KEY = 'django-insecure-0cukc0a$x282%@riil!poo4nj^s$8d-_7n94^h@)s_6y6eo3y*'
 
 
+import os
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('MYSQLDATABASE'),
+        'USER': os.getenv('MYSQLUSER'),
+        'PASSWORD': os.getenv('MYSQLPASSWORD'),
+        'HOST': os.getenv('MYSQLHOST'),
+        'PORT': os.getenv('MYSQLPORT'),
     }
 }
 
