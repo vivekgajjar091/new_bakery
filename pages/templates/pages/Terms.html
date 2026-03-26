@@ -1,0 +1,171 @@
+{% include 'pages/header.html' with title="Bakehouse - Privacy Policy" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="{% static 'js/animations.js' %}"></script>
+<!-- Image Section -->
+<div class="container-fluid px-0">
+    <img 
+        src="{% static 'terms.png' %}" 
+        class="img-fluid w-100"
+        alt="Privacy Policy"
+    >
+</div>
+<a href="#" class="to-top">
+    <i class="fas fa-arrow-up"></i> 
+</a>
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://bakery.app.n8n.cloud/webhook/959ae02a-17cf-40d0-bba0-e9ccd4b7074e/chat'
+	});
+</script>
+<script src="{% static 'js/animations.js' %}"></script>
+<script>
+const toTop = document.querySelector(".to-top");
+let isScrolling = false;
+let scrollTimeout;
+
+window.addEventListener("scroll", () => {
+    if (!isScrolling) {
+        window.requestAnimationFrame(() => {
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollPosition > 300) {
+                toTop.classList.add("to-top-active");
+            } else {
+                toTop.classList.remove("to-top-active");
+            }
+            
+            isScrolling = false;
+        });
+        isScrolling = true;
+    }
+});
+
+toTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    const startPosition = window.pageYOffset;
+    const targetPosition = 0;
+    const distance = targetPosition - startPosition;
+    const duration = 1500;
+    let start = null;
+    
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    function animateScroll(currentTime) {
+        if (start === null) start = currentTime;
+        const timeElapsed = currentTime - start;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        const easeProgress = easeInOutCubic(progress);
+        const currentPosition = startPosition + (distance * easeProgress);
+        
+        window.scrollTo(0, currentPosition);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animateScroll);
+        } else {
+            window.scrollTo(0, 0);
+        }
+    }
+    
+    requestAnimationFrame(animateScroll);
+});
+
+toTop.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toTop.click();
+    }
+});
+</script>
+<div class="container my-5">
+    <div class="bg-white p-4 p-md-5 rounded shadow-sm">
+
+        <h2 class="mb-3">Terms & Conditions</h2>
+
+        <p class="text-muted">
+            Welcome to Bakehouse Cake & Pastry. By accessing or using our website,
+            you agree to be bound by the following Terms and Conditions. Please
+            read them carefully before using our services or placing an order.
+        </p>
+
+        <hr>
+
+        <h4 class="mt-4">Use of Website</h4>
+        <p>
+            You agree to use this website only for lawful purposes and in a way
+            that does not infringe the rights of others or restrict their use of
+            the website. Any misuse of the website may result in termination of
+            your access.
+        </p>
+
+        <h4 class="mt-4"> Eligibility</h4>
+        <p>
+            By using this website, you confirm that you are at least 18 years old
+            or using the website under the supervision of a parent or guardian.
+        </p>
+
+        <h4 class="mt-4">Product Information</h4>
+        <p>
+            We make every effort to display accurate product details, including
+            descriptions, prices, and images. However, product images are for
+            illustration purposes only and may differ slightly from the actual product.
+        </p>
+
+        <h4 class="mt-4"> Orders & Payments</h4>
+        <p>
+            All orders placed through our website are subject to availability
+            and confirmation. Prices are listed in INR and may change without
+            prior notice. Full payment must be made before order processing.
+        </p>
+
+      
+        <h4 class="mt-4"> Intellectual Property</h4>
+        <p>
+            All content on this website, including text, images, logos, and designs,
+            is the property of Bakehouse Cake & Pastry. Unauthorized use or reproduction
+            of any content is strictly prohibited.
+        </p>
+
+        <h4 class="mt-4"> User Conduct</h4>
+        <p>
+            You must not attempt to damage, hack, or disrupt the website or its
+            services. Any such activity may lead to legal action.
+        </p>
+
+        <h4 class="mt-4"> Limitation of Liability</h4>
+        <p>
+            Bakehouse Cake & Pastry shall not be liable for any indirect, incidental,
+            or consequential damages arising from the use of our website or products.
+        </p>
+
+        <h4 class="mt-4"> Governing Law</h4>
+        <p>
+            These Terms & Conditions are governed by the laws of India. Any disputes
+            shall be subject to the jurisdiction of local courts.
+        </p>
+
+        <h4 class="mt-4"> Changes to Terms</h4>
+        <p>
+            We reserve the right to update or modify these Terms & Conditions at any
+            time. Continued use of the website after changes are posted indicates
+            acceptance of the updated terms.
+        </p>
+
+        <h4 class="mt-4"> Contact Us</h4>
+        <p>
+            If you have any questions regarding these Terms & Conditions, please
+            contact us through our website or customer support.
+        </p>
+
+    </div>
+</div>
+
+
+{% include 'pages/footer.html' %}

@@ -1,0 +1,2031 @@
+{% load static %}
+{% include 'pages/header.html' with title="Owner Dashboard - Bakehouse" %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<style>
+    
+.glass-card {
+    position: relative;
+    z-index: 1;
+}
+
+
+html, body {
+    background: #050505;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated Background Orbs */
+body::before {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(54, 232, 98, 0.4) 0%, rgba(245, 87, 108, 0) 70%);
+    filter: blur(100px);
+    top: -200px;
+    left: -200px;
+    z-index: 0;
+    animation: floatOrb1 20s ease-in-out infinite;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(51, 214, 255, 0.3) 0%, rgba(240, 147, 251, 0) 70%);
+    filter: blur(120px);
+    bottom: -150px;
+    right: -150px;
+    z-index: 0;
+    animation: floatOrb2 25s ease-in-out infinite;
+}
+
+/* Additional floating orb */
+.floating-orb {
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 193, 7, 0.2) 0%, rgba(255, 193, 7, 0) 70%);
+    filter: blur(80px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    animation: floatOrb3 30s ease-in-out infinite;
+}
+
+@keyframes floatOrb1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(100px, -50px) scale(1.1); }
+    66% { transform: translate(-50px, 100px) scale(0.9); }
+}
+
+@keyframes floatOrb2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-80px, 60px) scale(1.2); }
+    66% { transform: translate(120px, -80px) scale(0.8); }
+}
+
+@keyframes floatOrb3 {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    33% { transform: translate(-30%, -70%) scale(1.15); }
+    66% { transform: translate(-70%, -30%) scale(0.85); }
+}
+
+/* Enhanced Glass Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: left 0.8s ease;
+}
+
+
+
+
+/* Stat Cards with Glass Effect */
+.stat-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    color: white;
+}
+
+
+
+.stat-card.pending {
+    border-left: 4px solid #ffc107;
+}
+.stat-card.confirmed {
+    border-left: 4px solid #17a2b8;
+}
+.stat-card.preparing {
+    border-left: 4px solid #fd7e14;
+}
+.stat-card.ready {
+    border-left: 4px solid #28a745;
+}
+.stat-card.completed {
+    border-left: 4px solid #6c757d;
+}
+.stat-card.cancelled {
+    border-left: 4px solid #dc3545;
+}
+.stat-card.products {
+    border-left: 4px solid #ee00ff;
+}
+.stat-card.active {
+    border-left: 4px solid #28a745;
+}
+.stat-card.inactive {
+    border-left: 4px solid #dc3545;
+}
+.stat-card.trending {
+    border-left: 4px solid #6bf0ff;
+}
+.stat-card.inactive {
+    border-left: 4px solid #840014;
+}
+
+.order-card, .product-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    color: white;
+}
+
+.order-card::before, .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(245, 87, 108, 0.1),
+        transparent
+    );
+    transition: left 0.8s ease;
+}
+
+.order-card:hover::before, .product-card:hover::before {
+    left: 100%;
+}
+.status-badge {
+    padding: 0.5em 1em;
+    font-size: 0.85em;
+    font-weight: 600;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+.status-pending {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.4);
+}
+.status-confirmed {
+    background:  rgba(40, 196, 77, 0.32);
+    color:  #28a745
+    border: 1px solid rgba(40, 167, 69, 0.4);
+}
+.status-preparing {
+    background: rgba(253, 126, 20, 0.2);
+    color: #fd7e14;
+    border: 1px solid rgba(253, 126, 20, 0.4);
+}
+.status-ready {
+    background: rgba(23, 162, 184, 0.2);
+    color: #17a2b8;
+    border: 1px solid rgba(23, 162, 184, 0.4);
+}
+.status-completed {
+    background: rgba(108, 117, 125, 0.2);
+    color: #6c757d;
+    border: 1px solid rgba(108, 117, 125, 0.4);
+}
+.status-cancelled {
+    background: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.4);
+}
+
+.btn-owner {
+   background: linear-gradient(135deg, #e0c829, #ff9500);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.form-select, .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 12px;
+}
+
+.form-select:focus, .form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(245, 87, 108, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(245, 87, 108, 0.25);
+    color: white;
+}
+
+.form-select option {
+    background: #1a1a1a;
+    color: white;
+}
+
+.text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.order-details, .product-details {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav-tabs .nav-link {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.nav-tabs .nav-link.active {
+    background: rgba(245, 87, 108, 0.2);
+    border-color: rgba(245, 87, 108, 0.4);
+    color: #11998e;
+}
+
+.nav-tabs .nav-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #11998e;
+}
+
+.modal {
+    z-index: 1050;
+}
+
+.modal-dialog {
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+.modal-content {
+    background: rgba(20, 20, 20, 0.98);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(245, 87, 108, 0.2);
+    border-radius: 20px;
+    box-shadow: 
+        0 25px 80px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(245, 87, 108, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1051;
+}
+
+.modal-header {
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px 20px 0 0;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    color: #e8de28;
+    font-weight: 600;
+}
+
+.modal-body {
+    background: rgba(20, 20, 20, 0.9);
+    padding: 2rem;
+}
+
+.modal-footer {
+    background: rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 20px 20px;
+    padding: 1.5rem;
+}
+
+.btn-close {
+    filter: invert(1);
+    opacity: 0.7;
+}
+.modal-backdrop {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1049;
+}
+
+.modal-backdrop.show {
+    opacity: 1;
+}
+.form-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+.form-check-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.form-check-input:checked {
+    background-color: #e8de28;
+    border-color: #e8de28;
+}
+
+.form-check-input:focus {
+    border-color: #e8de28;
+    box-shadow: 0 0 0 0.2rem rgba(245, 87, 108, 0.25);
+}
+
+.form-check-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.modal-footer .btn-secondary {
+    background: rgba(108, 117, 125, 0.3);
+    border: 1px solid rgba(108, 117, 125, 0.5);
+    color: white;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.modal-footer .btn-secondary:hover {
+    background: rgba(108, 117, 125, 0.5);
+    border-color: rgba(108, 117, 125, 0.7);
+    color: white;
+}
+
+.modal-footer .btn-owner {
+    background: linear-gradient(135deg, #e8de28, #c4a300);
+    border: 1px solid rgba(17, 153, 142, 0.3);
+    color: white;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-gradient-clear {
+    background: linear-gradient(135deg, #ff5722, #ff7043);
+    border: none;
+    color: #ffffff;
+    width: 120px;
+    height: 43px;
+    padding: 8px 14px;
+    border-radius: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.to-top{
+    position: fixed;
+    bottom: 100px;
+    right: 25px;   /* change from left to right */
+    left: auto;    /* remove left */
+    width: 50px;
+    height: 50px;
+    background: #ff7a00;
+    color: #fff;
+    borde   r-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s;
+}
+
+.to-top-active{
+    opacity: 1;
+    pointer-events: auto;
+}
+</style>
+
+<a href="#" class="to-top">
+    <i class="fas fa-arrow-up"></i> 
+</a>
+<script src="{% static 'js/animations.js' %}"></script>
+<script>
+const toTop = document.querySelector(".to-top");
+let isScrolling = false;
+let scrollTimeout;
+
+window.addEventListener("scroll", () => {
+    if (!isScrolling) {
+        window.requestAnimationFrame(() => {
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollPosition > 300) {
+                toTop.classList.add("to-top-active");
+            } else {
+                toTop.classList.remove("to-top-active");
+            }
+            
+            isScrolling = false;
+        });
+        isScrolling = true;
+    }
+    
+    clearTimeout(scrollTimeout);
+    
+    scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+    }, 100);
+});
+
+toTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    const startPosition = window.pageYOffset;
+    const targetPosition = 0;
+    const distance = targetPosition - startPosition;
+    const duration = 3000; 
+    let start = null;
+    
+    
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    function animateScroll(currentTime) {
+        if (start === null) start = currentTime;
+        const timeElapsed = currentTime - start;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        const easeProgress = easeInOutCubic(progress);
+        const currentPosition = startPosition + (distance * easeProgress);
+        
+        window.scrollTo(0, currentPosition);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animateScroll);
+        } else {
+
+            window.scrollTo(0, 0);
+        }
+    }
+    
+    requestAnimationFrame(animateScroll);
+});
+
+toTop.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toTop.click();
+    }
+});
+</script>
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://bakery.app.n8n.cloud/webhook/959ae02a-17cf-40d0-bba0-e9ccd4b7074e/chat'
+	});
+</script>
+<div class="text-white text-center p-4">
+                <h1 class="mb-0">
+                    <i class=" text-warning"></i>
+                    Owner Dashboard
+                </h1>
+                <br>
+                <p class="text-warning">Manage your bakery business, products, and orders</p>
+            </div>
+        
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+            <div class="stat-card pending p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Best Seller</h6>
+                        <h3 class="mb-0 text-warning">{{ best_selling_products }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-star-fill text-warning" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+            <div class="stat-card confirmed p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Confirmed</h6>
+                        <h3 class="mb-0 text-info">{{ confirmed_orders }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-check-circle-fill text-info" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+            <div class="stat-card preparing p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Preparing</h6>
+                        <h3 class="mb-0 text-orange">{{ preparing_orders }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-fire text-orange" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+            <div class="stat-card ready p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Ready</h6>
+                        <h3 class="mb-0 text-success">{{ ready_orders }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-check2-square text-success" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+            <div class="stat-card completed p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Completed</h6>
+                        <h3 class="mb-0 text-secondary">{{ completed_orders }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-check-all text-secondary" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+            <div class="stat-card cancelled p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Cancelled</h6>
+                        <h3 class="mb-0 text-danger">{{ cancelled_orders }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-x-circle-fill text-danger" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+            <div class="stat-card products p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Total Products</h6>
+                        <h3 class="mb-0 text-light">{{ total_products }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-box-fill text-light" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+            <div class="stat-card active p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Active</h6>
+                        <h3 class="mb-0 text-success">{{ active_products }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+            <div class="stat-card inactive p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Inactive</h6>
+                        <h3 class="mb-0 text-danger">{{ inactive_products }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-x-circle-fill text-danger" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-3">
+            <div class="stat-card trending p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0 text-muted">Trending</h6>
+                        <h3 class="mb-0 text-info">{{ trending_products }}</h3>
+                    </div>
+                    <div>
+                        <i class="bi bi-arrow-up-circle-fill text-info" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+             </div>
+
+    <ul class="nav nav-tabs mb-4 p-4" id="dashboardTabs" role="tablist">
+        <li class="nav-item p-2" role="presentation">
+            <button class="nav-link active p-2" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">
+                <i class="bi bi-cart3 "></i> Orders ({{ total_orders }})
+            </button>
+        </li>
+        <li class="nav-item p-2" role="presentation">
+            <button class="nav-link p-2" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="tru">
+                <i class="bi bi-box"></i> Products ({{ total_products }})
+            </button>
+        </li>
+         <li class="nav-item p-2" role="presentation">
+            <button class="nav-link p-2" id="employees-tab" data-bs-toggle="tab" data-bs-target="#employees" type="button" role="tab" aria-controls="employees" aria-selected="false">
+                <i class="bi bi-people"></i> Employees
+            </button>
+                <li class="nav-item p-2" role="presentation">
+            <button class="nav-link p-2" id="sales-tab" data-bs-toggle="tab" data-bs-target="#sales" type="button" role="tab" aria-controls="sales" aria-selected="false">
+               <i class="bi bi-graph-up"></i></i> Sales
+            </button>
+        </li>
+        </li> 
+    </ul>
+<style>
+    #dashboardTabs {
+    border-bottom: 2px solid #e9ecef;
+}
+#dashboardTabs .nav-link {
+    color: #6c757d;
+    font-weight: 500;
+    border: none;
+    border-radius: 9px 9px ;
+    padding: 10px 18px;
+    transition: all 0.3s ease;
+}
+
+#dashboardTabs .nav-link i {
+    margin-right: 6px;
+    font-size: 1rem;
+}
+
+#dashboardTabs .nav-link:hover {
+    color: #0d6efd;
+}
+
+#dashboardTabs .nav-link.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+}
+
+#dashboardTabs .nav-item {
+    margin-right: 5px;
+}
+
+</style>
+    <div class="tab-content" id="dashboardTabsContent">
+        <!-- Orders Tab -->
+        <div class="tab-pane fade show active" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+            <!-- Filter and Actions -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="glass-card p-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-0 text-white">Orders Management</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <form method="GET" class="d-flex gap-2">
+                                    <select name="status" class="form-select" onchange="this.form.submit()">
+                                        <option value="">All Status</option>
+                                        {% for status_value, status_label in order_status_choices %}
+                                            <option value="{{ status_value }}" {% if status_filter == status_value %}selected{% endif %}>
+                                                {{ status_label }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    <a href="{% url 'owner_dashboard' %}" 
+                                    class="btn btn-sm btn-gradient-clear p-2">
+                                    Clear
+                                    </a>                          
+                             </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {% if orders %}
+                        {% for order in orders %}
+                        <div class="order-card p-4">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <h6 class="mb-0 me-3">Order #{{ order.id }}</h6>
+                                            <span class="status-badge status-{{ order.status }}">
+                                                {{ order.get_status_display }}
+                                            </span>
+                                        </div>
+                                        <div class="order-details">
+                                            <p class="mb-1">
+                                                <strong>Customer:</strong> {{ order.first_name }} {{ order.last_name }}
+                                                <span class="text-muted">({{ order.email }})</span>
+                                            </p>
+                                            <p class="mb-1">
+                                                <strong>Phone:</strong> {{ order.phone }}
+                                            </p>
+                                            <p class="mb-1">
+                                                <strong>Total:</strong> ₹{{ order.total_amount }}
+                                                <span class="text-muted">({{ order.get_payment_method_display }})</span>
+                                            </p>
+                                            <p class="mb-0">
+                                                <strong>Order Date:</strong> {{ order.created_at|date:"M d, Y H:i" }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-md-end">
+                                        <form method="POST" action="{% url 'owner_update_order_status' order.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <div class="d-flex gap-2 align-items-center p-2 ">
+                                                <select name="status" class="form-select form-select-sm" style="width: auto;">
+                                                    {% for status_value, status_label in order_status_choices %}
+                                                        <option value="{{ status_value }}" {% if status_value == order.status %}selected{% endif %}>
+                                                            {{ status_label }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button type="submit" class="btn btn-owner btn-sm">
+                                                    <i class=""></i> Update
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="text-muted">No orders found</h5>
+                            <p class="text-muted">
+                                {% if status_filter %}
+                                    No orders with status "{{ status_filter }}" found.
+                                    <a href="{% url 'owner_dashboard' %}">View all orders</a>
+                                {% else %}
+                                    No orders have been placed yet.
+                                {% endif %}
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="glass-card p-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-0 text-white">Product Management</h5>
+                            </div>
+                            <div class="col-md-6 text-md-end text-light">
+                                <button class="btn btn-owner" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                                    <i class="bi bi-plus-circle"></i> Add New Product
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {% if products %}
+                        {% for product in products %}
+                        <div class="product-card p-4">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        {% if product.image %}
+                                            <img src="{{ product.image.url }}" alt="{{ product.product_name }}" class="img-fluid rounded" style="max-height: 80px;">
+                                        {% else %}
+                                            <div class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height: 80px;">
+                                                <i class="bi bi-image text-white" style="font-size: 2rem;"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <h6 class="mb-0 me-3">{{ product.product_name }}</h6>
+                                            {% if product.is_trending %}
+                                                <span class="badge bg-warning text-dark">Trending</span>
+                                            {% endif %}
+                                            {% if product.active %}
+                                                <span class="badge bg-success ms-2">Active</span>
+                                            {% else %}
+                                                <span class="badge bg-danger ms-2">Inactive</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="product-details">
+                                            <p class="mb-1">
+                                                <strong>Category:</strong> {{ product.category }}
+                                                {% if product.subcategory %} / {{ product.subcategory }}{% endif %}
+                                            </p>
+                                            <p class="mb-1">
+                                                <strong>Price:</strong> ₹{{ product.price }}
+                                            </p>
+                                            <p class="mb-0">
+                                                <strong>Description:</strong> {{ product.desc|truncatewords:20 }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-md-end">
+                                        <div class="btn-group" role="group">
+                                            
+                                            <button class="btn btn-sm btn-gradient-warning"
+                                                    onclick="editProduct({{ product.product_id }})">
+                                                <i class="bi bi-pencil"></i> Edit
+                                            </button>
+
+                                            {% if product.active %}
+                                                <button class="btn btn-sm btn-gradient-danger"
+                                                        onclick="toggleProductStatus({{ product.product_id }})">
+                                                    <i class="bi bi-x-circle"></i> Deactivate
+                                                </button>
+                                            {% else %}
+                                                <button class="btn btn-sm btn-gradient-success"
+                                                        onclick="toggleProductStatus({{ product.product_id }})">
+                                                    <i class="bi bi-check-circle"></i> Activate
+                                                </button>
+                                            {% endif %}
+
+                                            <button class="btn btn-sm btn-gradient-success"
+                                                    onclick="deleteProduct({{ product.product_id }})">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                             
+                        <style>
+                         
+                          /* Smooth gradient buttons */
+                        .btn-gradient-warning {
+                        background: linear-gradient(135deg, #11998e, #38ef7d);
+                            backdrop-filter: blur(10px);
+                            -webkit-backdrop-filter: blur(10px);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            color: white;
+                            border-radius: 12px;
+                            padding: 10px 20px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                            position: relative;
+                            overflow: hidden;
+                        }
+
+                        .btn-gradient-danger {
+                        background: linear-gradient(135deg, #ff5722, #ff7043);
+                            backdrop-filter: blur(10px);
+                            -webkit-backdrop-filter: blur(10px);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            color: white;
+                            border-radius: 12px;
+                            padding: 10px 20px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                            position: relative;
+                            overflow: hidden;
+                        }
+
+                        .btn-gradient-success {
+                        background: linear-gradient(135deg, #667eea, #764ba2);
+                            backdrop-filter: blur(10px);
+                            -webkit-backdrop-filter: blur(10px);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            color: white;
+                            border-radius: 12px;
+                            padding: 10px 20px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                            position: relative;
+                            overflow: hidden;
+                        }
+
+                        .btn-gradient-danger:hover,
+                        .btn-gradient-success:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+                            opacity: 0.9;
+                        }
+
+                        .action-btn {
+                            width: 120px;
+                            height: 37px;
+                            padding: 0;
+                        }
+                    </style>
+               {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="bi bi-box text-muted" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="text-muted">No products found</h5>
+                            <p class="text-muted">Start by adding your first product.</p>
+                            <button class="btn btn-owner" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                                <i class="bi bi-plus-circle"></i> Add Your First Product
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="employees" role="tabpanel" aria-labelledby="employees-tab">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="glass-card p-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-0 text-white">Employee Management</h5>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <button class="btn btn-owner" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                                    <i class="bi bi-plus-circle"></i> Add New Employee
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="glass-card p-4">
+                        {% if employees %}
+                            <div class="table-responsive employee-table-wrapper">
+                        <table class="table table-dark table-hover align-middle employee-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Position</th>
+                                <th>Employee ID</th>
+                                <th>Hire Date</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for employee in employees %}
+                            <tr>
+                                <td class="fw-semibold">
+                                    {{ employee.user.first_name }} {{ employee.user.last_name }}
+                                </td>
+                                <td class="text-light">@{{ employee.user.username }}</td>
+                                <td>{{ employee.user.email }}</td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        {{ employee.position|default:"-" }}
+                                    </span>
+                                </td>
+                                <td>{{ employee.employee_id|default:"-" }}</td>
+                                <td>{{ employee.hire_date|date:"Y-m-d"|default:"-" }}</td>
+                                <td class="text-center">
+
+                                <button class="btn btn-sm btn-gradient-warning action-btn" onclick="editEmployee({{ employee.id }})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-gradient-danger action-btn" onclick="deleteEmployee({{ employee.id }})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                                </td>
+                            </tr>
+                    {% endfor %}
+                </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <div class="mb-3">
+                        <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="text-muted">No employees found</h5>
+                    <p class="text-muted">Start by adding your first employee.</p>
+                    <a href="#" class="btn btn-owner" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                        <i class="bi bi-plus-circle"></i> Add Your First Employee
+                    </a>
+                </div>
+            {% endif %}
+                </div>
+                </div>software engeeniyar
+            </div>
+        </div>
+        <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="glass-card p-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-0 text-white">Sales Analytics</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex gap-2">
+                                    <select id="salesPeriod" class="form-select" onchange="updateSalesView()">
+                                        <option value="week">Weekly Sales</option>
+                                        <option value="month">Monthly Sales</option>
+                                        <option value="year">Yearly Sales</option>
+                                    </select>
+                                    <button class="btn btn-owner" onclick="refreshSalesData()">
+                                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                                    </button>
+                                    <button class="btn btn-owner" onclick="exportSalesData()">
+                                        <i class="bi bi-download"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                    <h6 class="mb-0 text-muted" id="totalRevenueLabel">This Week's Revenue</h6>
+                    <h3 class="mb-0 text-warning" id="totalRevenue">Rs. 0.00</h3>
+                    </div>
+                    <div>
+                    <i class="bi bi-currency-rupee text-warning" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                    <h6 class="mb-0 text-muted" id="totalOrdersLabel">This Week's Orders</h6>
+                    <h3 class="mb-0 text-info" id="totalOrders">0</h3>
+                    </div>
+                    <div>
+                    <i class="bi bi-cart-check text-info" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                    <h6 class="mb-0 text-muted" id="avgOrderLabel">Avg Order Value</h6>
+                    <h3 class="mb-0 text-success" id="avgOrderValue">₹0.00</h3>
+                    </div>
+                    <div>
+                    <i class="bi bi-graph-up text-success" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                    <h6 class="mb-0 text-muted" id="completedOrdersLabel">Completed Orders</h6>
+                    <h3 class="mb-0 text-secondary" id="completedOrders">0</h3>
+                    </div>
+                    <div>
+                    <i class="bi bi-check-circle text-secondary" style="font-size: 1.5rem;"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+                                
+            <div class="row">
+                <div class="col-12">
+                    <div class="glass-card p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0 text-white" id="tableTitle">This Week's Sales Details</h6>
+                            <div class="d-flex gap-2">
+                            <input type="text"id="searchOrders" class="form-control" placeholder="Search orders..." style="width: 200px; color: white; background-color: #333;">
+
+                                <select id="statusFilter" class="form-select" style="width: 150px;">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="preparing">Preparing</option>
+                                    <option value="ready">Ready</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <style>
+                            #searchOrders::placeholder {
+                            color: white;
+                            opacity: 1; /* ensures full visibility */                                          }
+                        </style>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Payment Method</th>
+                                   </tr>
+                                </thead>
+                                <tbody id="salesTableBody">
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">Loading sales data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <small class="text-muted" id="recordCount">0 records</small>
+                            <nav>
+                                <ul class="pagination pagination-sm mb-0" id="pagination">
+                                    <!-- Pagination will be added dynamically -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addProductForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="product_name" class="form-label text-white">Product Name *</label>
+                            <input type="text" class="form-control" id="product_name" name="product_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="price" class="form-label text-white">Price *</label>
+                            <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="category" class="form-label text-white">Category *</label>
+                            <input type="text" class="form-control" id="category" name="category" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="subcategory" class="form-label text-white">Subcategory</label>
+                            <input type="text" class="form-control" id="subcategory" name="subcategory">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="desc" class="form-label text-white">Description *</label>
+                        <textarea class="form-control" id="desc" name="desc" rows="3" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="image" class="form-label text-white">Product Image</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check mt-4">
+                                <input class="form-check-input" type="checkbox" id="is_trending" name="is_trending">
+                                <label class="form-check-label text-white" for="is_trending">
+                                    Mark as Trending
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="active" name="active" checked>
+                                <label class="form-check-label text-white" for="active">
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-owner" onclick="addProduct()">Add Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" id="edit_product_id" name="product_id">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_product_name" class="form-label text-white">Product Name *</label>
+                            <input type="text" class="form-control" id="edit_product_name" name="product_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_price" class="form-label text-white">Price *</label>
+                            <input type="number" class="form-control" id="edit_price" name="price" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_category" class="form-label text-white">Category *</label>
+                            <input type="text" class="form-control" id="edit_category" name="category" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_subcategory" class="form-label text-white">Subcategory</label>
+                            <input type="text" class="form-control" id="edit_subcategory" name="subcategory">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_desc" class="form-label text-white">Description *</label>
+                        <textarea class="form-control" id="edit_desc" name="desc" rows="3" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_image" class="form-label text-white">Product Image</label>
+                            <input type="file" class="form-control" id="edit_image" name="image" accept="image/*">
+                            <small class="text-muted">Leave empty to keep current image</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check mt-4">
+                                <input class="form-check-input" type="checkbox" id="edit_is_trending" name="is_trending">
+                                <label class="form-check-label text-white" for="edit_is_trending">
+                                    Mark as Trending
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="edit_active" name="active">
+                                <label class="form-check-label text-white" for="edit_active">
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-owner" onclick="updateProduct()">Update Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addEmployeeForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_username" class="form-label text-white">Username *</label>
+                            <input type="text" class="form-control" id="employee_username" name="username" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_email" class="form-label text-white">Email *</label>
+                            <input type="email" class="form-control" id="employee_email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_first_name" class="form-label text-white">First Name *</label>
+                            <input type="text" class="form-control" id="employee_first_name" name="first_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_last_name" class="form-label text-white">Last Name *</label>
+                            <input type="text" class="form-control" id="employee_last_name" name="last_name" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_password" class="form-label text-white">Password *</label>
+                            <input type="password" class="form-control" id="employee_password" name="password" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_confirm_password" class="form-label text-white">Confirm Password *</label>
+                            <input type="password" class="form-control" id="employee_confirm_password" name="confirm_password" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_id" class="form-label text-white">Employee ID</label>
+                            <input type="text" class="form-control" id="employee_id" name="employee_id">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_position" class="form-label text-white">Position</label>
+                            <input type="text" class="form-control" id="employee_position" name="position">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_phone" class="form-label text-white">Phone</label>
+                            <input type="tel" class="form-control" id="employee_phone" name="phone">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_hire_date" class="form-label text-white">Hire Date</label>
+                            <input type="date" class="form-control" id="employee_hire_date" name="hire_date">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-owner" onclick="addEmployee()">Add Employee</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Employee Modal -->
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editEmployeeForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" id="edit_employee_id" name="employee_id">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_username" class="form-label text-white">Username *</label>
+                            <input type="text" class="form-control" id="edit_employee_username" name="username" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_email" class="form-label text-white">Email *</label>
+                            <input type="email" class="form-control" id="edit_employee_email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_first_name" class="form-label text-white">First Name *</label>
+                            <input type="text" class="form-control" id="edit_employee_first_name" name="first_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_last_name" class="form-label text-white">Last Name *</label>
+                            <input type="text" class="form-control" id="edit_employee_last_name" name="last_name" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_password" class="form-label text-white">New Password (leave empty to keep current)</label>
+                            <input type="password" class="form-control" id="edit_employee_password" name="password">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_confirm_password" class="form-label text-white">Confirm New Password</label>
+                            <input type="password" class="form-control" id="edit_employee_confirm_password" name="confirm_password">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_employee_id" class="form-label text-white">Employee ID</label>
+                            <input type="text" class="form-control" id="edit_employee_employee_id" name="employee_id_field">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_position" class="form-label text-white">Position</label>
+                            <input type="text" class="form-control" id="edit_employee_position" name="position">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_phone" class="form-label text-white">Phone</label>
+                            <input type="tel" class="form-control" id="edit_employee_phone" name="phone">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_employee_hire_date" class="form-label text-white">Hire Date</label>
+                            <input type="date" class="form-control" id="edit_employee_hire_date" name="hire_date">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-owner" onclick="updateEmployee()">Update Employee</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'pages/footer.html' %}
+
+<script>
+let allOrdersData = [];
+let filteredOrdersData = [];
+let currentPage = 1;
+const recordsPerPage = 10;
+
+function addProduct() {
+    const form = document.getElementById('addProductForm');
+    const formData = new FormData(form);
+    
+    fetch('{% url "add_product" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while adding the product.');
+    });
+}
+
+function editProduct(productId) {
+    fetch(`/owner/get-product/${productId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const product = data.product;
+                
+                document.getElementById('edit_product_id').value = product.product_id;
+                document.getElementById('edit_product_name').value = product.product_name;
+                document.getElementById('edit_price').value = product.price;
+                document.getElementById('edit_category').value = product.category;
+                document.getElementById('edit_subcategory').value = product.subcategory || '';
+                document.getElementById('edit_desc').value = product.desc;
+                document.getElementById('edit_is_trending').checked = product.is_trending;
+                document.getElementById('edit_active').checked = product.active;
+                
+                const modal = new bootstrap.Modal(document.getElementById('editProductModal'));
+                modal.show();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while fetching product data.');
+        });
+}
+
+function updateProduct() {
+    const form = document.getElementById('editProductForm');
+    const formData = new FormData(form);
+    const productId = formData.get('product_id');
+    
+    fetch(`/owner/edit-product/${productId}/`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+            modal.hide();
+            
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the product.');
+    });
+}
+
+function toggleProductStatus(productId) {
+    fetch(`/owner/toggle-product/${productId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the product status.');
+    });
+}
+
+function deleteProduct(productId) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        fetch(`/owner/delete-product/${productId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the product.');
+        });
+    }
+}
+
+function addEmployee() {
+    const form = document.getElementById('addEmployeeForm');
+    const formData = new FormData(form);
+    
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirm_password');
+    if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+    }
+    
+    fetch('{% url "owner_add_employee" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addEmployeeModal'));
+            modal.hide();
+            
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while adding the employee.');
+    });
+}
+
+function editEmployee(employeeId) {
+    fetch(`/owner/get-employee/${employeeId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const employee = data.employee;
+                
+                document.getElementById('edit_employee_id').value = employee.id;
+                document.getElementById('edit_employee_username').value = employee.user.username;
+                document.getElementById('edit_employee_email').value = employee.user.email;
+                document.getElementById('edit_employee_first_name').value = employee.user.first_name;
+                document.getElementById('edit_employee_last_name').value = employee.user.last_name;
+                document.getElementById('edit_employee_employee_id').value = employee.employee_id || '';
+                document.getElementById('edit_employee_position').value = employee.position || '';
+                document.getElementById('edit_employee_phone').value = employee.phone || '';
+                document.getElementById('edit_employee_hire_date').value = employee.hire_date || '';
+                
+                document.getElementById('edit_employee_password').value = '';
+                document.getElementById('edit_employee_confirm_password').value = '';
+                
+                const modal = new bootstrap.Modal(document.getElementById('editEmployeeModal'));
+                modal.show();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while fetching employee data.');
+        });
+}
+
+function updateEmployee() {
+    const form = document.getElementById('editEmployeeForm');
+    const formData = new FormData(form);
+    
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirm_password');
+    if (password && password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+    }
+    
+    const employeeId = formData.get('employee_id');
+    
+    fetch(`/owner/edit-employee/${employeeId}/`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editEmployeeModal'));
+            modal.hide();
+            
+
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the employee.');
+    });
+}
+
+function deleteEmployee(employeeId) {
+    if (confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
+        fetch(`/owner/delete-employee/${employeeId}/`,{
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the employee.');
+        });
+    }
+}
+
+function updateSalesView() {
+    const period = document.getElementById('salesPeriod').value;
+    
+    if (period === 'week') {
+        document.getElementById('totalRevenueLabel').textContent = "This Week's Revenue";
+        document.getElementById('totalOrdersLabel').textContent = "This Week's Orders";
+        document.getElementById('completedOrdersLabel').textContent = "Completed Orders";
+        document.getElementById('tableTitle').textContent = "This Week's Sales Details";
+    } else if (period === 'month') {
+        document.getElementById('totalRevenueLabel').textContent = "This Month's Revenue";
+        document.getElementById('totalOrdersLabel').textContent = "This Month's Orders";
+        document.getElementById('completedOrdersLabel').textContent = "Completed Orders";
+        document.getElementById('tableTitle').textContent = "This Month's Sales Details";
+    } else if (period === 'year') {
+        document.getElementById('totalRevenueLabel').textContent = "This Year's Revenue";
+        document.getElementById('totalOrdersLabel').textContent = "This Year's Orders";
+        document.getElementById('completedOrdersLabel').textContent = "Completed Orders";
+        document.getElementById('tableTitle').textContent = "This Year's Sales Details";
+    }
+    
+    loadSalesData(period);
+}
+
+function refreshSalesData() {
+    const period = document.getElementById('salesPeriod').value;
+    loadSalesData(period);
+}
+
+function loadSalesData(period = 'week') {
+    document.getElementById('salesTableBody').innerHTML = '<tr><td colspan="6" class="text-center text-muted">Loading sales data...</td></tr>';
+    
+    fetch(`/owner/sales-data/?period=${period}`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateSalesSummary(data.summary);
+            allOrdersData = data.orders;
+            filteredOrdersData = [...allOrdersData];
+            currentPage = 1;
+            
+            updateSalesTable(filteredOrdersData);
+            updateRecordCount();
+        } else {
+            document.getElementById('salesTableBody').innerHTML = `<tr><td colspan="6" class="text-center text-danger">${data.message || 'Error loading sales data'}</td></tr>`;
+            updateSalesSummary({
+                total_revenue: 0,
+                total_orders: 0,
+                completed_orders: 0,
+                avg_order_value: 0
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error loading sales data:', error);
+        document.getElementById('salesTableBody').innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading sales data. Please try again.</td></tr>';
+        updateSalesSummary({
+            total_revenue: 0,
+            total_orders: 0,
+            completed_orders: 0,
+            avg_order_value: 0
+        });
+    });
+}
+
+function updateSalesSummary(summary) {
+    document.getElementById('totalRevenue').textContent = `Rs. ${summary.total_revenue.toFixed(2)}`;
+    document.getElementById('totalOrders').textContent = summary.total_orders;
+    document.getElementById('avgOrderValue').textContent = `Rs. ${summary.avg_order_value.toFixed(2)}`;
+    document.getElementById('completedOrders').textContent = summary.completed_orders;
+}
+
+function updateSalesTable(orders) {
+    const tbody = document.getElementById('salesTableBody');
+    
+    if (orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No sales data available for this period</td></tr>';
+        return;
+    }
+    
+    const startIndex = (currentPage - 1) * recordsPerPage;
+    const endIndex = startIndex + recordsPerPage;
+    const paginatedOrders = orders.slice(startIndex, endIndex);
+    
+    tbody.innerHTML = paginatedOrders.map(order => `
+        <tr>
+            <td>#${order.id}</td>
+            <td>${order.customer_name}</td>
+            <td>${order.date}</td>
+            <td>₹${order.amount}</td>
+            <td><span class="status-badge status-${order.status}">${order.status_display}</span></td>
+            <td>${order.payment_method}</td>
+        </tr>
+    `).join('');
+    
+    updatePagination(orders.length);
+}
+
+function filterOrders() {
+    const searchTerm = document.getElementById('searchOrders').value.toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+    
+    filteredOrdersData = allOrdersData.filter(order => {
+        const matchesSearch = !searchTerm || 
+            order.id.toString().includes(searchTerm) ||
+            order.customer_name.toLowerCase().includes(searchTerm) ||
+            order.amount.includes(searchTerm);
+        
+        const matchesStatus = !statusFilter || order.status === statusFilter;
+        
+        return matchesSearch && matchesStatus;
+    });
+    
+    currentPage = 1;
+    updateSalesTable(filteredOrdersData);
+    updateRecordCount();
+}
+
+function updateRecordCount() {
+    const totalRecords = filteredOrdersData.length;
+    const startRecord = (currentPage - 1) * recordsPerPage + 1;
+    const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
+    
+    document.getElementById('recordCount').textContent = 
+        `Showing ${startRecord}-${endRecord} of ${totalRecords} records`;
+}
+
+function updatePagination(totalRecords) {
+    const totalPages = Math.ceil(totalRecords / recordsPerPage);
+    const pagination = document.getElementById('pagination');
+    
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+    }
+    
+    let paginationHTML = '';
+    
+    paginationHTML += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>
+        </li>
+    `;
+    
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            paginationHTML += `
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                </li>
+            `;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            paginationHTML += `
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            `;
+        }
+    }
+    
+    paginationHTML += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>
+        </li>
+    `;
+    
+    pagination.innerHTML = paginationHTML;
+}
+
+function changePage(page) {
+    const totalPages = Math.ceil(filteredOrdersData.length / recordsPerPage);
+    if (page < 1 || page > totalPages) return;
+    
+    currentPage = page;
+    updateSalesTable(filteredOrdersData);
+    updateRecordCount();
+}
+
+function exportSalesData() {
+    const period = document.getElementById('salesPeriod').value;
+    
+    let csvContent = "Order ID,Customer,Date,Amount,Status,Payment Method\n";
+    
+    filteredOrdersData.forEach(order => {
+        csvContent += `${order.id},"${order.customer_name}",${order.date},${order.amount},${order.status_display},${order.payment_method}\n`;
+    });
+    
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sales_data_${period}_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const salesTab = document.getElementById('sales-tab');
+    if (salesTab) {
+        salesTab.addEventListener('shown.bs.tab', function() {
+            loadSalesData('week');
+        });
+    }
+    
+    const searchInput = document.getElementById('searchOrders');
+    const statusFilter = document.getElementById('statusFilter');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', filterOrders);
+    }
+    
+    if (statusFilter) {
+        statusFilter.addEventListener('change', filterOrders);
+    }
+});
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>

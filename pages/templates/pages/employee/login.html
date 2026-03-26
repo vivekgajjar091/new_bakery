@@ -1,0 +1,218 @@
+{% load static %}
+{% include 'pages/header.html' with title="Employee Login - Bakehouse" %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<style>
+body {
+    background-color: #000000;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+body::after {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: rgba(255, 0, 111, 0.25); /* red glow */
+    filter: blur(140px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+}
+
+/* Blur circles */
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: 0;
+}
+
+/* Purple / Blue glow */
+body::before {
+    background: rgba(255, 255, 255, 0.27);
+    top: -120px;
+    left: -120px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.26);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.19);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.card {
+    border-radius: 15px; 
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff !important;
+    border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107, #ffc107);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 237, 77, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #6c757d, #495057);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    color: white;
+}
+
+.alert {
+    border-radius: 8px;
+}
+
+.form-label {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.text-white {
+    color: white !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.employee-icon {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+</style>
+
+<div class="container py-5">
+    <!-- Header Section -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-warning mb-3">Employee Login</h1>
+        <p class="lead text-white">
+            Access your Bakehouse employee dashboard
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto">
+            <div class="card glass-card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div class="mb-3">
+                            <div class="position-relative d-inline-block profile-image-container">
+                                <div class="employee-icon text-white rounded-circle d-inline-flex align-items-center justify-content-center border border-3 border-warning" 
+                                     style="width: 120px; height: 120px; font-size: 3rem;">
+                                    <i class="bi bi-briefcase-fill"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2 class="fw-bold text-warning mb-2">Employee Portal</h2>
+                        <p class="text-white">Login to manage orders and operations</p>
+                    </div>
+
+                    {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                    <form method="POST" action="{% url 'employee_login' %}">
+                        {% csrf_token %}
+                        
+                        {% if next %}
+                            <input type="hidden" name="next" value="{{ next }}">
+                        {% elif request.GET.next %}
+                            <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label text-white fw-bold">Username <span class="text-danger">*</span></label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="username" 
+                                   name="username" 
+                                   placeholder="Enter your employee username" 
+                                   value="{{ username }}"
+                                   required 
+                                   autofocus>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label text-white fw-bold">Password <span class="text-danger">*</span></label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password" 
+                                   name="password" 
+                                   placeholder="Enter your password" 
+                                   required>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'login' %}" class="btn btn-secondary me-md-2 w-100 w-md-auto">Customer Login</a>
+                            <button type="submit" class="btn btn-warning w-100 w-md-auto">
+                                <i class="bi bi-box-arrow-in-right"></i> Employee Login
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <hr class="my-3">
+                        <p class="text-white small">
+                            Are you a owner? 
+                            <a href="{% url 'owner_login' %}" class="text-warning fw-bold text-decoration-none">
+                               Use owner login
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'pages/footer.html' %}

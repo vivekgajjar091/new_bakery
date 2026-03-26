@@ -1,0 +1,283 @@
+<style>
+.footer-section {
+    background: linear-gradient(135deg, #1c1c1c, #2b2b2b);
+    color: #fff;
+}
+
+.footer-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffc107;
+}
+
+.footer-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #ffc107;
+}
+
+.footer-text {
+    color: #ddd;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.footer-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #ddd;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #ffc107;
+    padding-left: 6px;
+}
+
+.footer-contact {
+    font-size: 14px;
+    color: #ddd;
+    margin-bottom: 10px;
+}
+
+.footer-contact i {
+    color: #ffc107;
+    margin-right: 8px;
+}
+
+.footer-contact a {
+    color: #ddd;
+    text-decoration: none;
+}
+
+.footer-contact a:hover {
+    color: #ffc107;
+}
+
+.footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    color: #fff;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+.footer-social a:hover {
+    background: #ffc107;
+    color: #000;
+    transform: translateY(-3px);
+}
+
+.footer-divider {
+    border-color: rgba(255,255,255,0.2);
+    margin-top: 40px;
+}
+
+.footer-bottom {
+    font-size: 14px;
+    color: #bbb;
+}
+</style>
+<footer class="footer-section mt-5">
+    <div class="container py-5">
+        <div class="row gy-4">
+
+            <div class="col-lg-4 col-md-6">
+                {% load static %}
+                <div class="d-flex align-items-center mb-3">
+                   <a href="{% url 'home' %}">
+                    <img src="{% static 'logo.png' %}" alt="Bakehouse Logo"
+                         class="footer-logo me-3">
+                    <span href="{% url 'home' %}" class="text-warning " 
+                    style="
+                    font-size:40px;
+                    font-weight:400;
+                    color:#ffffff;
+                    letter-spacing:1x;" > Bakehouse
+                    
+                </span>
+            </a>
+                </div>
+                <p class="footer-text">
+                    Bakehouse is your neighborhood bakery, crafting fresh breads,
+                    pastries, and desserts daily using quality ingredients and
+                    traditional techniques. Every bite is baked with love.
+                </p>
+                <div class="footer-social mt-4">
+                    <a href="{% url 'contact' %}"><i class="bi bi-google"></i></a>
+                    <a href="{% url 'contact' %}"><i class="bi bi-facebook"></i></a>
+                    <a href="{% url 'contact' %}"><i class="bi bi-twitter"></i></a>
+                    <a href="{% url 'contact' %}"><i class="bi bi-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h5 class="text-warning footer-title">Quick Links</h5>
+                <ul class="footer-links">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'product' %}">Products</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                    <li><a href="{% url 'cart' %}">Cart</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h5 class="text-warning footer-title">Policies</h5>
+                <ul class="footer-links">
+                    <li><a href="{% url 'Terms' %}">Terms & Conditions</a></li>
+                    <li><a href="{% url 'Privacy' %}">Privacy Policy</a></li>
+                    <li><a href="{% url 'about' %}">Refund Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <h5 class="text-warning footer-title">Contact Info</h5>
+
+                <p class="footer-contact">
+                    <i class="fa-solid fa-location-dot"></i>
+                   619 - RK Prime, 6th Floor,
+150ft. Ring Road, Nana Mava Circle,
+Rajkot - 360005, Gujarat, India.
+                </p>
+
+                <p class="footer-contact">
+                    <i class="fa-solid fa-phone"></i>
+                    <a href="tel:9737175978">+91 9977 77978</a>
+                </p>
+
+                <p class="footer-contact">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <a href="tel:6359645956">+91 63596 11111</a>
+                </p>
+
+                <p class="footer-contact">
+                    <i class="fa-solid fa-envelope"></i>
+                    <a href="mailto:vpanchasara777@rku.ac.in">
+                        vpanchasara777@rku.ac.in
+                    </a>
+                </p>
+            </div>
+        </div>
+        <hr class="footer-divider">
+        <div class="text-center footer-bottom">
+            <p class="mb-0">
+                © {% now "Y" %} <strong>Bakehouse</strong>. All Rights Reserved.
+            </p>
+        </div>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script>
+window.addEventListener('load', function () {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.classList.add('hide');
+        setTimeout(() => {
+            preloader.remove(); 
+        }, 500);
+    }
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const cartForms = document.querySelectorAll('form[action*="cart"]:not(.exclude-from-cart-handler)');
+    cartForms.forEach(function(form) {
+        if (form.querySelector('input[name="remove_item"]')) {
+            return; 
+        } 
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            const formData = new FormData(form);
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            
+            submitButton.disabled = true;
+            submitButton.textContent = 'Adding...';
+            
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showCartMessage(data.message || 'Product added to cart!', 'success');
+                } else {
+                    throw new Error(data.message || 'Failed to add to cart');
+                }
+            })
+            .then(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            })
+            .catch(error => {
+                showCartMessage('Error adding to cart. Please try again.', 'error');
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            });
+        });
+    });   
+    
+    function showCartMessage(message, type) {
+        const existingMsg = document.querySelector('.cart-message');
+        if (existingMsg) {
+            existingMsg.remove();
+        }
+        
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'cart-message alert alert-' + (type === 'success' ? 'success' : 'danger') + ' alert-dismissible fade show';
+        msgDiv.style.cssText = 'position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
+        msgDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        document.body.appendChild(msgDiv);
+        
+        setTimeout(function() {
+            if (msgDiv.parentNode) {
+                msgDiv.remove();
+         }
+     }, 3000);
+  }
+});
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

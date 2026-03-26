@@ -1,0 +1,465 @@
+{% load static %}
+{% include 'pages/header.html' with title=product.product_name %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<style>
+.glass-card {
+    position: relative;
+    z-index: 1;
+}
+html, body {
+    background: #050505;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 1700px;
+    height: 500px;
+    background: rgba(255, 123, 0, 0.42);
+    filter: blur(260px);
+    top: 17%;
+    right: 2%;
+    z-index: 0;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.30);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.19);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s ease;
+}
+
+.glass-card img {
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+}
+
+.snacks-section {
+    background-color: #1c1c1c;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.40);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 221, 0, 0.8);
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ff4d4d;
+    box-shadow: 0 0 0 0.2rem rgba(255, 77, 77, 0.25);
+    color: white;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff4d4d, #ff4d4d);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 77, 77, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745, #28a745);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+
+.star-rating {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.star {
+    color: #ddd;
+    font-size: 20px;
+    transition: color 0.2s ease;
+    cursor: pointer;
+}
+
+.star.filled {
+    color: #ffc107;
+}
+
+.star-input {
+    display: none;
+}
+
+.star-input:checked ~ .star {
+    color: #ffc107;
+}
+
+.review-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.review-author {
+    font-weight: 600;
+    color: #fff;
+}
+
+.review-date {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.review-text {
+    color: #fff;
+    line-height: 1.5;
+}
+
+.rating-stars {
+    color: #ffc107;
+    font-size: 14px;
+}
+.btn-danger {
+    background: linear-gradient(135deg, #ff5722, #ff7043);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+.btn-success {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    border: none;
+    border-radius: 25px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 210, 211, 0.3);
+}
+
+.to-top{
+    position: fixed;
+    bottom: 100px;
+    right: 25px;   /* change from left to right */
+    left: auto;    /* remove left */
+    width: 50px;
+    height: 50px;
+    background: #ff7a00;
+    color: #fff;
+    borde   r-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s;
+}
+
+.to-top-active{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+</style>
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://bakery.app.n8n.cloud/webhook/959ae02a-17cf-40d0-bba0-e9ccd4b7074e/chat'
+	});
+</script>
+<a href="#" class="to-top">
+    <i class="fas fa-arrow-up"></i> 
+</a>
+<script src="{% static 'js/animations.js' %}"></script>
+<script>
+const toTop = document.querySelector(".to-top");
+let isScrolling = false;
+let scrollTimeout;
+
+window.addEventListener("scroll", () => {
+    if (!isScrolling) {
+        window.requestAnimationFrame(() => {
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollPosition > 300) {
+                toTop.classList.add("to-top-active");
+            } else {
+                toTop.classList.remove("to-top-active");
+            }
+            
+            isScrolling = false;
+        });
+        isScrolling = true;
+    }
+});
+
+toTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    const startPosition = window.pageYOffset;
+    const targetPosition = 0;
+    const distance = targetPosition - startPosition;
+    const duration = 1500;
+    let start = null;
+    
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    function animateScroll(currentTime) {
+        if (start === null) start = currentTime;
+        const timeElapsed = currentTime - start;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        const easeProgress = easeInOutCubic(progress);
+        const currentPosition = startPosition + (distance * easeProgress);
+        
+        window.scrollTo(0, currentPosition);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animateScroll);
+        } else {
+            window.scrollTo(0, 0);
+        }
+    }
+    
+    requestAnimationFrame(animateScroll);
+});
+
+toTop.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toTop.click();
+    }
+});
+</script>
+<div class="container py-5">
+
+    <div class="row g-5">
+        
+        <div class="col-lg-6">
+            <div class="card glass-card overflow-hidden h-100">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid w-100" alt="{{ product.product_name }}" style="max-height: 700px; object-fit: cover;">
+                {% else %}
+                <img src="{% static 'product1.avif' %}" class="img-fluid w-100" alt="{{ product.product_name }}" style="max-height: 700px; object-fit: cover;">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+            <div class="card glass-card p-4 h-100">
+                <h1 class="display-5 fw-bold text-warning mb-2">{{ product.product_name }}</h1>
+                
+                <div class="mb-3">
+                    {% if product.category %}
+                    <span class="badge bg-secondary me-2">{{ product.category }}</span>
+                    {% endif %}
+                    {% if product.subcategory %}
+                    <span class="badge bg-light text-dark border">{{ product.subcategory }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="d-flex align-items-center mb-3">
+                    <div class="star-rating">
+                        {% with avg_rating=product.get_average_rating %}
+                            {% for i in "12345" %}
+                                <span class="star {% if forloop.counter <= avg_rating %}filled{% endif %}">★</span>
+                            {% endfor %}
+                        {% endwith %}
+                    </div>
+                    {% with review_count=product.get_review_count %}
+                        {% if review_count > 0 %}
+                            <span class="text-white ms-2">{{ product.get_average_rating }} ({{ review_count }} reviews)</span>
+                        {% else %}
+                            <span class="text-white ms-2">No reviews yet</span>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <h2 class="text-warning fw-bold mb-4">Rs. {{ product.price }}</h2>
+
+                <p class="lead text-white mb-5">{{ product.desc }}</p>
+                <div class="row g-3">
+                    <div class="col-md-12">
+                         <form method="POST" action="{% url 'cart' %}" class="d-flex align-items-center gap-3">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_name" value="{{ product.product_name }}">
+                            <input type="hidden" name="price" value="{{ product.price }}">
+                            
+                            <div class="input-group" style="width: 140px;">
+                                <span class="input-group-text bg-light">Qty</span>
+                                <input type="number" name="quantity" class="form-control text-center" value="1" min="1">
+                            </div>
+
+                            <button type="submit" class="btn btn-danger btn-lg flex-grow-1">
+                                <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <form method="POST" action="{% url 'payment' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_name" value="{{ product.product_name }}">
+                            <input type="hidden" name="price" value="{{ product.price }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button class="btn btn-success btn-lg w-100 exclude-from-cart-handler">
+                                 Buy Now
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-4 border-top">
+    <p class="small text-white mb-2">
+        <i class="bi bi-truck me-2 "></i>Fast Delivery Available
+    </p>
+    <p class="small text-white mb-2">
+        <i class="bi bi-arrow-repeat me-2"></i>Easy Returns
+    </p>
+    <p class="small text-white mb-2">
+        <i class="bi bi-headset me-2"></i>24/7 Customer Support
+    </p>
+    <p class="small text-white mb-0">
+        <i class="bi bi-shield-check me-2"></i>Secure Payment
+    </p>
+</div>
+            </div>
+        </div>
+    </div>
+
+    
+    {% if related_products %}
+    <div class="mt-5 pt-5">
+        <h3 class="text-white fw-bold mb-4">You might also like</h3>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+            {% for rp in related_products %}
+            <div class="col">
+                <div class="card h-100 shadow-sm fade-in-up glass-card ">
+                    <a href="{% url 'view_p' rp.product_id %}" class="text-decoration-none text-dark ">
+                        {% if rp.image %}
+                        <img src="{{ rp.image.url }}" class="card-img-top" alt="{{ rp.product_name }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                        <img src="{% static 'product1.avif' %}" class="card-img-top" alt="{{ rp.product_name }}" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body p-4 text-center">
+                            <h6 class="card-title text-warning fw-bold mb-1 h5">{{ rp.product_name }}</h6>
+                            <p class="card-text text-white fw-bold ">Rs. {{ rp.price }}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="mt-5 pt-5">
+        <h3 class="text-white fw-bold mb-4">Customer Reviews</h3>
+        
+        <div class="card glass-card p-4 mb-4">
+            <h4 class="text-white mb-3">Write a Review</h4>
+            <form method="POST" action="{% url 'add_review' product.product_id %}">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="text-white small">Name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-white small">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="text-white small">Rating</label>
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5" class="star-input" required>
+                            <label for="star5" class="star">★</label>                                         
+                            <input type="radio" id="star4" name="rating" value="4" class="star-input">                                         
+                            <label for="star4" class="star">★</label>                                         
+                            <input type="radio" id="star3" name="rating" value="3" class="star-input">                                         
+                            <label for="star3" class="star">★</label>                                         
+                            <input type="radio" id="star2" name="rating" value="2" class="star-input">                                         
+                            <label for="star2" class="star">★</label>                                         
+                            <input type="radio" id="star1" name="rating" value="1" class="star-input">                                         
+                            <label for="star1" class="star">★</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="text-white small">Your Review</label>
+                        <textarea name="review_text" class="form-control" rows="4" required></textarea>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-warning">Submit Review</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        {% for review in product.reviews.all %}
+            {% if review.is_approved %}
+            <div class="review-card">
+                <div class="review-header">
+                    <div>
+                        <div class="review-author">{{ review.name }}</div>
+                        <div class="rating-stars">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="review-date">{{ review.created_at|date:"M d, Y" }}</div>
+                </div>
+                <div class="review-text">{{ review.review_text }}</div>
+            </div>
+            {% endif %}
+        {% empty %}
+            <div class="text-center text-white py-4">
+                <p>No reviews yet. Be the first to review this product!</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% include 'pages/footer.html' %}

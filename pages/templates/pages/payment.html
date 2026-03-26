@@ -1,0 +1,402 @@
+{% load static %}
+{% include 'pages/header.html' with title="Checkout" %}
+<style>
+    .glass-card {
+    position: relative;
+    z-index: 1;
+}
+body {
+    background-color: #000000;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 1000px;
+    height: 700px;
+    border-radius: 50%;
+    background: rgba(0, 194, 36, 0.26);
+    filter: blur(140px);
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+}
+
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.26);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.19);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s ease;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+}
+
+.text-white {
+    color: white !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.form-label {
+    color: white !important;
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white !important;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-check-label {
+    color: white !important;
+}
+
+.text-dark {
+    color: white !important;
+}
+
+.text-muted {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.bg-light {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.border-bottom {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+</style>
+<div class="container my-5">
+    {% if messages %}
+    <div class="mb-3">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="glass-card p-4">
+                <div class="bg- text-white py-3 rounded-top-4">
+                    <h5 class="mb-0">
+                        <i class=" me-2"></i>
+                        Customer Details
+                    </h5>
+                </div>
+                <div class="p-4">
+                    <form method="POST" action="{% url 'payment' %}" id="paymentForm">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">First Name <span class="text-danger">*</span></label>
+                                <input type="text" name="first_name" class="form-control" placeholder="" value="{{ customer.first_name }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                                <input type="text" name="last_name" class="form-control" placeholder="" value="{{ customer.last_name }}" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" placeholder="" value="{{ customer.email }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone <span class="text-danger">*</span></label>
+                            <input type="text" name="phone" class="form-control" placeholder="  " value="{{ customer.phone }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address <span class="text-danger">*</span></label>
+                            <textarea name="address" class="form-control" rows="3" placeholder="House No, Street, Area" required>{{ customer.address }}</textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">City <span class="text-danger">*</span></label>
+                                <input type="text" name="city" class="form-control" placeholder="City" value="{{ customer.city }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Pincode <span class="text-danger">*</span></label>
+                                <input type="text" name="pincode" class="form-control" placeholder="000000" value="{{ customer.pincode }}" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Payment Method</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="paymentOnline" value="online" checked>
+                                <label class="form-check-label" for="paymentOnline">
+                                    Online Payment
+                                </label>
+                            </div>
+                        <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="paymentCod" value="cod">
+                                <label class="form-check-label" for="paymentCod">
+                                    Cash on Delivery
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="btn btn-warning btn-lg w-100 py-3 rounded-pill fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#confirmOrderModal">
+                            <i class="bi bi-check-circle-fill me-2"></i> Confirm Order
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class=" p-4">
+                <div class="bg-drk text-white py-3 rounded-top-4">
+                    <h5 class="mb-0">
+                        <i class=" me-2"></i>
+                        Order Summary
+                    </h5>
+                </div>
+                <div class="p-4">
+                    {% if cart_items %}
+                        {% for item in cart_items %}
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-light">
+                            <div>
+                                <h6 class="mb-1 text-dark">{{ item.name }}</h6>
+                                <span class="badge bg-light text-dark border">Qty: {{ item.quantity }}</span>
+                            </div>
+                            <strong class="text-dark">₹{{ item.subtotal|floatformat:2 }}</strong>
+                        </div>
+                        {% endfor %}
+                        <div class="bg-light p-3 rounded-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">Grand Total</span>
+                                <h4 class="mb-0 text-warning fw-bold">Rs. {{ grand_total|floatformat:2 }}</h4>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="display-6 text-muted"></i>
+                            <p class="text-muted mt-2">Your cart is empty</p>
+                            <a href="{% url 'product' %}" class="btn btn-primary mt-2">Browse Products</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmOrderModal" tabindex="-1" aria-labelledby="confirmOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-gradient-success text-white border-0">
+                <h5 class="modal-title" id="confirmOrderModalLabel">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    Confirm Your Order
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="text-center mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-cart-check-fill text-warning" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="text-dark mb-2">Ready to Place Order?</h4>
+                    <p class="text-muted">Please review your order details before confirming</p>
+                </div>
+                
+                <div class="bg-light rounded-3 p-3 mb-3">
+                    <h6 class="text-dark mb-3">
+                        <i class="bi bi-person-fill me-2"></i>
+                        Customer Information
+                    </h6>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <small class="text-muted d-block">Name</small>
+                            <strong id="modalCustomerName">Loading...</strong>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted d-block">Email</small>
+                            <strong id="modalCustomerEmail">Loading...</strong>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted d-block">Phone</small>
+                            <strong id="modalCustomerPhone">Loading...</strong>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-muted d-block">City</small>
+                            <strong id="modalCustomerCity">Loading...</strong>
+                        </div>
+                    </div>
+                    <br> 
+                    <div class="bg-light rounded-3 p-3 mb-3">
+                        <h6 class="text-dark mb-2">
+                            <i class="bi bi-credit-card me-2"></i>
+                            Payment Method
+                        </h6>
+                        <strong id="modalPaymentMethod">Loading...</strong>
+                    </div>
+                </div>
+                
+                <div class="bg-warning bg-opacity-10 rounded-3 p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-dark mb-1">Total Amount</h6>
+                            <small class="text-muted">Including all taxes</small>
+                        </div>
+                        <h3 class="text-success mb-0">Rs. {{ grand_total|floatformat:2 }}</h3>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer border-0 bg-light">
+                <button type="button" class="btn btn-outline-primary px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-arrow-left me-2"></i> Back to Edit
+                </button>
+                <button type="submit" form="paymentForm" class="btn btn-warning px-4" id="finalConfirmBtn">
+                    <i class="bi bi-check-circle-fill me-2"></i> Confirm Order
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    
+    .modal-content {
+        border-radius: 1rem;
+    }
+    
+    .modal-header {
+        border-radius: 1rem 1rem 0 0;
+    }
+    
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #ffbf00 0%, #ffbf00 100%);
+    }
+    
+    
+
+.modal-content,
+.modal-content h1,
+.modal-content h2,
+.modal-content h3,
+.modal-content h4,
+.modal-content h5,
+.modal-content h6,
+.modal-content p,
+.modal-content span,
+.modal-content strong,
+.modal-content small,
+.modal-content div {
+    color: #000000 !important;
+}
+
+/* Optional: make muted text darker */
+.modal-content .text-muted {
+    color: #555 !important;
+}
+    
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('confirmOrderModal');
+    const form = document.getElementById('paymentForm');
+    const finalConfirmBtn = document.getElementById('finalConfirmBtn');
+    
+    modal.addEventListener('show.bs.modal', function() {
+        const firstName = form.querySelector('[name="first_name"]').value;
+        const lastName = form.querySelector('[name="last_name"]').value;
+        const email = form.querySelector('[name="email"]').value;
+        const phone = form.querySelector('[name="phone"]').value;
+        const city = form.querySelector('[name="city"]').value;
+        const paymentMethod = form.querySelector('[name="payment_method"]:checked').value;
+        
+        document.getElementById('modalCustomerName').textContent = `${firstName} ${lastName}`;
+        document.getElementById('modalCustomerEmail').textContent = email;
+        document.getElementById('modalCustomerPhone').textContent = phone;
+        document.getElementById('modalCustomerCity').textContent = city;
+        document.getElementById('modalPaymentMethod').textContent = paymentMethod === 'online' ? 'Online Payment' : 'Cash on Delivery';
+    });
+    
+    finalConfirmBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+        }
+        
+        const modalBody = modal.querySelector('.modal-body');
+        modalBody.innerHTML = `
+            <div class="text-center py-4">
+                <div class="mb-3">
+                    <i class="bi bi-check-lg text-success" style="font-size: 2rem;"></i>
+                </div>
+                <h4 class="text-success mb-2">Order Confirmed!</h4>
+                <p class="text-muted">Your order has been successfully placed and is being processed.</p>
+                <div class="alert alert-success mt-3">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    You will receive a confirmation email shortly.
+                </div>
+            </div>
+        `;
+        
+        const modalFooter = modal.querySelector('.modal-footer');
+        modalFooter.innerHTML = `
+            
+        `;
+        
+        setTimeout(function() {
+            form.submit();
+        }, 2000);
+    });
+    
+    form.addEventListener('submit', function(e) {
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+            form.classList.add('was-validated');
+        }
+    });
+    
+});
+</script>
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://bakery.app.n8n.cloud/webhook/959ae02a-17cf-40d0-bba0-e9ccd4b7074e/chat'
+	});
+</script>
+{% include 'pages/footer.html'%}

@@ -1,0 +1,1373 @@
+{% include 'pages/header.html' with title="Bakehouse - About" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="{% static 'js/animations.js' %}"></script>
+
+<style>
+.glass-card {
+    position: relative;
+    z-index: 1;
+}
+
+html, body {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0f1f 50%, #0f1419 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 1500px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(106, 250, 70, 0.4) 0%, rgba(255, 60, 112, 0.2) 50%, transparent 70%);
+    filter: blur(260px);
+    top: 20%;
+    right: 3%;
+    z-index: 0;
+    animation: floatGradient 15s ease-in-out infinite alternate;
+}
+
+@keyframes floatGradient {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -20px) scale(1.05); }
+    50% { transform: translate(-20px, 30px) scale(0.95); }
+    75% { transform: translate(-30px, -10px) scale(1.02); }
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 0, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.8s;
+}
+
+.glass-card:hover::before {
+    left: 100%;
+}
+
+.glass-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 117, 221, 0.3);
+}
+
+.glass-card img {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 24px;
+    transition: transform 0.6s ease;
+}
+
+.glass-card:hover img {
+    transform: scale(1.05);
+}
+
+.snacks-section {
+    background-color: #1c1c1c; /* dark elegant background */
+}
+
+
+.scroll-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 40px 0;
+
+    margin: 20px 0;
+}
+
+.scroll-track {
+    display: flex;
+    width: max-content;
+    animation: horizontal-scroll 30s linear infinite;
+    gap: 20px;
+    padding: 0 10px;
+}
+
+/* Pause animation on hover */
+.scroll-wrapper:hover .scroll-track {
+    animation-play-state: paused;
+}
+
+/* Smooth infinite animation */
+@keyframes horizontal-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Card styling for scroll items */
+.scroll-track .col-lg-3 {
+    min-width: 280px;
+    max-width: 280px;
+    flex-shrink: 0;
+}
+
+.scroll-track .card {
+    height: 100%;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+.scroll-track .card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(255, 148, 60, 0);
+}
+
+
+/* Story section styles */
+.story-section {
+    margin: 60px 0;
+}
+
+.image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.story-image {
+    width: 100%;
+    height: 540px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.image-container:hover .story-image {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-container:hover .image-overlay {
+    opacity: 1;
+}
+
+.story-content {
+    height: 100%;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 25px;
+    position: relative;
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.section-text p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.section-text .lead {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300;
+}
+
+.section-text .highlight {
+    color: #ff75dd;
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Mission and Coming Soon sections */
+.mission-section, .coming-soon-section {
+    margin: 60px 0;
+}
+
+.mission-image, .coming-soon-image {
+    width: 100%;
+    height: 540px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.mission-content, .coming-soon-content {
+    height: 100%;
+}
+
+/* Launch notification button */
+.launch-notify {
+    margin-top: 30px;
+    text-align: left;
+}
+
+
+.btn-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-gradient:hover::before {
+    left: 100%;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 117, 221, 0.4);
+    color: white;
+}
+
+/* Enhanced Specialties Section */
+.specialties-section {
+    margin: 80px 0;
+    text-align: center;
+}
+
+.specialties-section h3 {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff75dd, #ff3c70);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    animation: fadeInScale 1s ease-out;
+}
+
+.specialties-section p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 50px;
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.scroll-wrapper::before,
+.scroll-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.scroll-track {
+    display: flex;
+    width: max-content;
+    animation: horizontal-scroll 35s linear infinite;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.scroll-track .col-lg-3 {
+    min-width: 300px;
+    max-width: 300px;
+    flex-shrink: 0;
+}
+
+.scroll-track .card {
+    height: 100%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    position: relative;
+}
+
+.scroll-track .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-track .card:hover::before {
+    opacity: 1;
+}
+
+.scroll-track .card img {
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.scroll-track .card:hover img {
+    transform: scale(1.1);
+}
+
+.scroll-track .card-body {
+    padding: 25px;
+    text-align: center;
+}
+
+.scroll-track .card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.scroll-track .card-text {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Enhanced CTA button */
+.cta-button {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.cta-button .btn {
+    background: linear-gradient(135deg, #ff75dd, #ff3c70);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-button .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.cta-button .btn:hover::before {
+    left: 100%;
+}
+
+.contact-form-section {
+    padding: 80px 0;
+    margin: 60px 0;
+}
+
+.contact-form-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 40px;
+    transition: all 0.3s ease;
+}
+
+.contact-form-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 117, 221, 0.2);
+}
+
+.contact-form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff75dd, #ff3c70);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.enhanced-form-control {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.enhanced-form-control:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #ff75dd;
+    box-shadow: 0 0 0 3px rgba(255, 117, 221, 0.2);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.enhanced-form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.enhanced-form-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.star-rating-enhanced {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.star-label-enhanced {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: grayscale(100%);
+    opacity: 0.3;
+    user-select: none;
+    transform: scale(1);
+}
+
+.star-label-enhanced:hover {
+    filter: grayscale(50%);
+    opacity: 0.7;
+    transform: scale(1.1);
+}
+
+.star-label-enhanced.active {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.star-label-enhanced.hover-active {
+    filter: grayscale(0%);
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+/* Enhanced submit button */
+.btn-submit-enhanced {
+    background: linear-gradient(135deg, #ff75dd, #ff3c70);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.btn-submit-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-submit-enhanced:hover::before {
+    left: 100%;
+}
+
+.btn-submit-enhanced:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(255, 117, 221, 0.4);
+    color: white;
+}
+
+/* Bakery info section */
+.bakery-info-section {
+    text-align: center;
+    padding: 40px;
+}
+
+.bakery-info-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff75dd, #ff3c70);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 30px;
+}
+
+.bakery-image-container {
+    position: relative;
+    margin: 30px 0;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.bakery-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.6s ease;
+}
+
+.bakery-image-container:hover .bakery-image {
+    transform: scale(1.05);
+}
+
+.bakery-description {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+    font-size: 1.1rem;
+    margin: 20px 0;
+}
+
+.bakery-mission {
+    color: #ff75dd;
+    font-weight: 600;
+    font-style: italic;
+    font-size: 1.2rem;
+    margin: 20px 0;
+}
+
+/* Contact info */
+.contact-info {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 40px;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.contact-info-item:hover {
+    color: #ff75dd;
+    transform: translateY(-2px);
+}
+
+.contact-info-item i {
+    margin-right: 10px;
+    color: #ff75dd;
+    font-size: 1.2rem;
+}
+
+/* Floating animation for decorative elements */
+@keyframes floatDecoration {
+    0%, 100% { 
+        transform: translateY(0px) rotate(0deg) scale(1); 
+    }
+    33% { 
+        transform: translateY(-10px) rotate(120deg) scale(1.05); 
+    }
+    66% { 
+        transform: translateY(5px) rotate(240deg) scale(0.95); 
+    }
+}
+
+.floating-decoration {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 117, 221, 0.3) 0%, transparent 70%);
+    filter: blur(20px);
+    animation: floatDecoration 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .about-hero h1 {
+        font-size: 3rem;
+    }
+    
+    .specialties-section h3 {
+        font-size: 2rem;
+    }
+    
+    .scroll-track .col-lg-3 {
+        min-width: 250px;
+        max-width: 250px;
+    }
+    
+    .contact-form-container {
+        padding: 25px;
+    }
+}
+
+/* Enhanced hero section */
+.about-section {
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+}
+
+.about-hero {
+    position: relative;
+    z-index: 2;
+}
+
+.about-hero h1 {
+    font-size: 4.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff75dd 0%, #ff3c70 25%, #ffc93c 75%, #ff75dd 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease-in-out infinite, fadeInScale 1.2s ease-out;
+    text-shadow: 0 0 40px rgba(255, 117, 221, 0.3);
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.about-hero .lead {
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300;
+    animation: fadeInUp 1s ease-out 0.3s both;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Decorative elements */
+.hero-decoration {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 117, 221, 0.2) 0%, transparent 70%);
+    filter: blur(40px);
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero-decoration-1 {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.hero-decoration-2 {
+    top: 20%;
+    right: 15%;
+    animation-delay: 2s;
+}
+
+.hero-decoration-3 {
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+.rounded-img {
+    border-radius: 50px;
+}
+
+
+
+.stats-container {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.stat-card {
+    background-color: #6a62622f;
+    width: 260px;
+    height: 240px;
+     border: 2px solid rgba(255, 238, 0, 0.59);
+    border-radius: 25px;
+    text-align: center;
+    padding: 40px 20px;
+    transition: 0.3s ease;
+}
+
+.stat-card img {
+    width: 95px;
+    height: 80px;
+    margin-bottom: 25px;
+}
+
+
+
+.stat-card p {
+    font-size: 20px;
+    color: #ffe5f2;
+    line-height: 1.5;
+}
+
+
+.to-top{
+    position: fixed;
+    bottom: 100px;
+    right: 25px;   /* change from left to right */
+    left: auto;    /* remove left */
+    width: 50px;
+    height: 50px;
+    background: #ff7a00;
+    color: #fff;
+    borde   r-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s;
+}
+
+.to-top-active{
+    opacity: 1;
+    pointer-events: auto;
+}
+</style>
+
+<a href="#" class="to-top">
+    <i class="fas fa-arrow-up"></i> 
+</a>
+<script src="{% static 'js/animations.js' %}"></script>
+<script>
+const toTop = document.querySelector(".to-top");
+let isScrolling = false;
+let scrollTimeout;
+
+window.addEventListener("scroll", () => {
+    if (!isScrolling) {
+        window.requestAnimationFrame(() => {
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollPosition > 300) {
+                toTop.classList.add("to-top-active");
+            } else {
+                toTop.classList.remove("to-top-active");
+            }
+            
+            isScrolling = false;
+        });
+        isScrolling = true;
+    }
+    
+    clearTimeout(scrollTimeout);
+    
+    scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+    }, 100);
+});
+
+toTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    const startPosition = window.pageYOffset;
+    const targetPosition = 0;
+    const distance = targetPosition - startPosition;
+    const duration = 3000; 
+    let start = null;
+    
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    function animateScroll(currentTime) {
+        if (start === null) start = currentTime;
+        const timeElapsed = currentTime - start;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        const easeProgress = easeInOutCubic(progress);
+        const currentPosition = startPosition + (distance * easeProgress);
+        
+        window.scrollTo(0, currentPosition);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animateScroll);
+        } else {
+            window.scrollTo(0, 0);
+        }
+    }
+    
+    requestAnimationFrame(animateScroll);
+});
+
+toTop.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toTop.click();
+    }
+});
+
+</script>
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://bakery.app.n8n.cloud/webhook/959ae02a-17cf-40d0-bba0-e9ccd4b7074e/chat'
+	});
+</script>
+<div class="container mt-5">
+   {% load static %}
+
+<section class="about-section py-5">
+    <div class="hero-decoration hero-decoration-1"></div>
+    <div class="hero-decoration hero-decoration-2"></div>
+    <div class="hero-decoration hero-decoration-3"></div>
+    
+    <div class="about-hero">
+        <div class="p-4">
+            <h1 class="bounce-entry">About Us</h1>
+            <p class="lead">
+                "Freshly baked happiness delivered with love"
+            </p>
+        </div>
+    </div>
+</section>
+
+    <div class="row align-items-center mb-5 story-section">
+    <div class="col-md-5">
+        <div class="image-container">
+            <img src="{% static 'ourstory.png' %}"
+            class="img-fluid story-image"
+            alt="Cozy Bakery Interior">
+            <div class="image-overlay"></div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="story-content glass-card p-5">
+            <h2 class="section-title bounce-entry">Our Story</h2>
+            <div class="section-text">
+                <p class="lead">
+                    Bakehouse began with a simple love for baking and a dream of sharing fresh, homemade flavors with our community.
+                </p>
+                <p>
+                    What started as a small kitchen passion soon grew into a place where tradition and creativity come together.
+                    Every recipe is inspired by time-honored methods, family favorites, and a touch of modern flair.
+                </p>
+                <p>
+                    We believe great baking starts with quality ingredients, patience, and care.
+                    Each loaf, pastry, and cake is made fresh daily, just like we would for our own family.
+                </p>
+                <p class="highlight">
+                    Bakehouse is more than a bakery—it's a place where moments are celebrated and memories are baked.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row align-items-center mb-5 mission-section flex-md-row-reverse">
+    <div class="col-md-5">
+        <div class="image-container">
+            <img src="{% static 'ourmission.png' %}"
+                 class="img-fluid mission-image"
+                 alt="Cozy Bakery Interior with Wooden Decor">
+            <div class="image-overlay"></div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="mission-content glass-card p-5">
+            <h2 class="section-title bounce-entry">Our Mission</h2>
+            <div class="section-text">
+                <p class="lead">
+                    Our mission at Bakehouse is to provide fresh, delicious, and high-quality baked goods every day.
+                </p>
+                <p>
+                    We are dedicated to using carefully chosen ingredients and traditional baking methods to ensure the best taste and quality.
+                    Each item is prepared with care, patience, and a genuine passion for baking.
+                </p>
+                <p class="highlight">
+                    We aim to create flavors that bring comfort, happiness, and a feeling of home to every customer.
+                </p>
+                <p>
+                    Customer satisfaction, consistency, and trust are at the core of everything we do.
+                    We believe in building lasting relationships through honesty, quality, and warm service.
+                </p>
+            </div>
+        </div>  
+    </div>
+</div>
+<div class="stats-wrapper">
+    <div class="stats-container">
+
+        <div class="stat-card">
+            <img src="{% static 'box.png' %}" alt="Globe">
+            <p>Delivery in 700+ Cities</p>
+        </div>
+
+        <div class="stat-card">
+            <img src="{% static 'hand.png' %}" alt="Cake">
+            <p>Safe & Hygenic Bakery</p>
+        </div>
+
+        <div class="stat-card">
+            <img src="{% static 'love.png' %}" alt="Store">
+            <p>Trusted By 20 Million</p>
+        </div>
+
+        <div class="stat-card">
+            <img src="{% static 'man.png' %}" alt="Cupcake">
+            <p>Services in 18000+ pincodes</p>
+        </div>
+
+    </div>
+</div>
+<div class="row align-items-center mb-5 coming-soon-section">
+    <div class="col-md-5">
+        <div class="image-container">
+            <img src="{% static 'comingsoon.png' %}"
+                 class="img-fluid coming-soon-image"
+                 alt="Coming Soon - Delivery Service">
+            <div class="image-overlay"></div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="coming-soon-content glass-card p-5">
+            <h2 class="section-title bounce-entry">Coming Soon</h2>
+            <div class="section-text">
+                <p class="lead">
+                    We are excited to announce that Bakehouse will soon offer convenient home delivery for our freshly baked items!
+                </p>
+                <p>
+                    Customers will be able to place orders easily from the comfort of their homes through our website or by phone.
+                    From daily breads to special treats, every order will be prepared fresh and delivered with care.
+                </p>
+                <p class="highlight">
+                    Our goal is to make quality bakery products accessible, timely, and hassle-free.
+                </p>
+                <p>
+                    With our upcoming home delivery service, enjoying your favorite Bakehouse flavors will be just a click or call away.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="specialties-section">
+        <div class="section-header">
+            <h3 class="bounce-entry">Our Specialties</h3>
+            <p>A selection of our most loved baked goods</p>
+        </div>
+        
+        
+        <div class="scroll-wrapper">
+            <div class="scroll-track">
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 fade-in-up glass-card stagger-bounce-item">
+                        <img src="{% static 'cc1.png' %}"
+                             class="card-img-top img-fluid"
+                             alt="Brown Bread">
+                        <div class="card-body">
+                            <h5 class="card-title">Vanilla Raspberry</h5>
+                            <p class="card-text">A classic golden sponge topped with creamy</p>
+                        </div>
+                    </div>
+                </div>
+
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 fade-in-up glass-card stagger-bounce-item">
+                <img src="{% static 'cc2.png' %}"
+                class="card-img-top img-fluid"
+                alt="Milkey Chocolate">
+                <style>
+                    .card{
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                </style>
+                <div class="card-body">
+                    <h5 class="card-title">Red Velvet Cupcake</h5>
+                    <p class="card-text">A striking crimson sponge paired with smooth </p>
+                </div>
+                </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 fade-in-up glass-card stagger-bounce-item">
+                        <img src="{% static 'c1.png' %}"
+                             class="card-img-top img-fluid"
+                             alt="Strawberry Cake">
+                        <div class="card-body">
+                            <h5 class="card-title">Chocolate Cake</h5>
+                            <p class="card-text">A rich, triple-layer sponge draped in glossy gana…</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 fade-in-up glass-card stagger-bounce-item">
+                        <img src="{% static 'c2.png' %}"
+                             class="card-img-top img-fluid"
+                             alt="Masala Khaari">
+                            <style>
+                                .card{
+                                position: relative;
+                                overflow: hidden;
+                            }
+                            </style>
+                            <div class="card-body">
+                            <h5 class="card-title">Black Rose Cake</h5>
+                            <p class="card-text">
+                                A dramatic, gothic-style dark cocoa cake adorned …
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 fade-in-up glass-card stagger-bounce-item">
+                        <img src="{% static 'br2.png' %}"
+                             class="card-img-top img-fluid"
+                             alt="Brown Bread">
+                        <div class="card-body">
+                            <h5 class="card-title">Black Charcoal & Pecan</h5>
+                            <p class="card-text">A striking, unique loaf featuring earthy charcoal…</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 fade-in-up glass-card stagger-bounce-item">
+                        <img src="{% static 'br3.png' %}"
+                             class="card-img-top img-fluid"
+                             alt="Milkey Chocolate">
+                                 <style>
+            .card{
+            position: relative;
+            overflow: hidden;
+        }
+
+        </style>
+
+                        <div class="card-body">
+                            <h5 class="card-title">Classic White Bread</h5>
+                            <p class="card-text">The ultimate comfort loaf—soft, pillowy, and perf…</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 fade-in-up glass-card stagger-bounce-item">
+                        <img src="{% static 'pf1.png' %}"
+                             class="card-img-top img-fluid"
+                             alt="Strawberry Cake">
+                                 <style>
+            .card{
+            position: relative;
+            overflow: hidden;
+        }
+
+}
+        </style>
+
+            
+                        <div class="card-body">
+                            <h5 class="card-title">Garden Vegetable Puff</h5>
+                            <p class="card-text">A wholesome medley of farm-fresh carrots, corn, a…</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 fade-in-up glass-card stagger-bounce-item">
+                        <img src="{% static 'pf2.png' %}"
+                             class="card-img-top img-fluid"
+                             alt="Masala Khaari">
+                        <div class="card-body">
+                            <h5 class="card-title">Ube & Macadamia Dream</h5>
+                            <p class="card-text">
+                               Our signature unique puff featuring vibrant purpl…
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cta-button ">
+            <a href="/product" class="btn bounce-hover">See our Products</a>
+        </div>
+    </div> 
+<div class="contact-form-section">
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <div class="contact-form-container">
+                    <h3 class="contact-form-title">Send a Message</h3>
+                    
+                    <form method="POST" action="{% url 'contact' %}">
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <label for="name" class="enhanced-form-label">
+                                Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="name" name="name" class="form-control enhanced-form-control" placeholder="Your Name" required aria-required="true">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="email" class="enhanced-form-label">
+                                Email <span class="text-danger">*</span>
+                            </label>
+                            <input type="email" id="email" name="email" class="form-control enhanced-form-control" placeholder="Your Email" required aria-required="true">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="phone" class="enhanced-form-label">
+                                Phone <span class="text-danger">*</span>
+                            </label>
+                            <input type="tel" id="phone" name="phone" class="form-control enhanced-form-control" placeholder="Your Number" required aria-required="true" pattern="[0-9]+" inputmode="numeric" title="Please enter numbers only">
+                        </div>
+
+                        <div class="text-right mb-4">
+                            <h4 class="text-white mb-3">Share Your Experience</h4>
+                             <div class="star-rating-enhanced">
+                                {% for i in "12345" %}
+                                    <input type="radio" name="rating" value="{{ i }}" id="star{{ i }}" class="d-none">
+                                    <label for="star{{ i }}" class="star-label-enhanced">⭐</label>
+                                {% endfor %}    
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="feedback" class="enhanced-form-label text-right d-block">
+                                Your Feedback <span class="text-white-50">(Optional)</span>
+                            </label>
+                            <textarea id="feedback" name="feedback" class="form-control enhanced-form-control" rows="4"
+                                      placeholder="Tell us about your experience with Bakehouse..."></textarea>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn-submit-enhanced">
+                                <i class="fas fa-paper-plane me-2"></i> Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="bakery-info-section glass-card">
+            
+                    <div class="floating-decoration" style="top: 10%; left: 5%;"></div>
+                    <div class="floating-decoration" style="top: 20%; right: 10%; animation-delay: 2s;"></div>
+                    <div class="floating-decoration" style="bottom: 15%; left: 15%; animation-delay: 4s;"></div>
+                    <h3 class="bakery-info-title">The place where we bake magic!</h3>
+                    <div class="bakery-image-container ">
+                        <img src="{% static 'about.png' %}" 
+                             alt="Bakehouse Illustration" 
+                             class="bakery-image ">
+                    </div>
+                    <div class="bakery-description">
+                        <p>
+                            <strong>Bakehouse</strong> is where passion meets perfection.
+                            Every bake tells a story — a story of patience, craftsmanship,
+                            and care. From the moment the ingredients are chosen to the final golden finish,
+                            each creation is made with the finest ingredients, time-honored techniques, 
+                            and a whole lot of love.
+                        </p>
+                        <p>
+                            Inspired by tradition and driven by creativity,
+                            we believe great baking isn't just about taste — it's about creating moments of comfort, joy,
+                            and togetherness in every bite.
+                        </p>
+                        <p>
+                            What began as a small neighborhood bakery has grown into a trusted destination for handcrafted treats, 
+                            driven by quality and creativity.
+                        </p>
+                    </div>
+                    <p class="bakery-mission">
+                        Our mission — spread happiness through freshly baked goodness.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="crossorigin="anonymous"referrerpolicy="no-referrer"/>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const starInputs = document.querySelectorAll('input[name="rating"]');
+    const starLabels = document.querySelectorAll('.star-label-enhanced');
+    
+    function updateStars(rating) {
+        starLabels.forEach(function(label, index) {
+            const starValue = index + 1;
+            if (starValue <= rating) {
+                label.classList.add('active');
+                label.classList.remove('hover-active');
+            } else {
+                label.classList.remove('active', 'hover-active');
+            }
+        });
+    }
+    
+    starInputs.forEach(function(input) {
+        input.addEventListener('change', function() {
+            const rating = parseInt(this.value);
+            updateStars(rating);
+        });
+    });
+    
+    starLabels.forEach(function(label, index) {
+        label.addEventListener('mouseenter', function() {
+            const rating = index + 1;
+            starLabels.forEach(function(l, i) {
+                if (i < rating) {
+                    l.classList.add('hover-active');
+                } else {
+                    l.classList.remove('hover-active');
+                }
+            });
+        });
+    });
+    
+    document.querySelector('.star-rating-enhanced').addEventListener('mouseleave', function() {
+        const selected = document.querySelector('input[name="rating"]:checked');
+        if (selected) {
+            updateStars(parseInt(selected.value));
+        } else {
+            starLabels.forEach(function(label) {
+                label.classList.remove('hover-active');
+            });
+        }
+    });
+    
+    const selected = document.querySelector('input[name="rating"]:checked');
+    if (selected) {
+        updateStars(parseInt(selected.value));
+    }
+    });
+</script>
+
+<div class="container py-5">
+    <div class="row align-items-center">
+        
+        <div class="col-md-6 text-center">
+            <img src="{% static 'abo.png' %}" 
+                 alt="Brown Bread"
+                 class="img-fluid custom-img">
+        </div>
+        <div class="col-md-6 text-md-start text-center text-light">
+            <h4 class="mb-4">Stalk our bakes? Go ahead. Call us too.</h4>
+
+            <div class="contact-info">
+             <p>
+                <a href="tel:+919737175978" class="contact-info-item text-light">
+                        <i class="fa-solid fa-phone me-2"></i>
+                        +91 97371 7598
+                </a>
+                </p>
+                <p>
+                    <a href="https://www.google.com/maps?q=Rajkot,Gujarat" target="_blank" class="contact-info-item text-light">
+                        <i class="fa-solid fa-location-dot me-2"></i>
+                        Rajkot, Gujarat
+                    </a>
+                </p>
+                   <p>
+                    <a href="mailto:vpanchasara777@rku.ac.in" class="contact-info-item text-light">
+                        <i class="fa-solid fa-envelope me-2"></i>
+                        vpanchasara777@rku.ac.in
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<style> 
+.text-light {
+    color: #ffffff;
+}  
+.contact-info {
+    margin-top: 20px;
+        border: 1.5px solid rgba(255, 0, 191, 0.63);
+}
+.contact-info p {
+    margin-bottom: 12px;
+}  
+.contact-info-item {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    color: #ff0088;
+}
+.contact-info-item i {
+    font-size: 18px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+.contact-info-item:hover {
+    color: #f8c146;
+}
+.contact-info-item:hover i {
+    transform: translateX(5px);
+    color: #f8c146;
+}
+@media (max-width: 768px) {
+    .contact-info-item {
+   justify-content: center;
+    }
+}
+</style>
+</div>
+</div>
+</div>
+{% include 'pages/footer.html' %}

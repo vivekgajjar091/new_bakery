@@ -1,0 +1,638 @@
+{% load static %}
+{% include 'pages/header.html' with title="Bakehouse - Products" %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="{% static 'js/animations.js' %}"></script>
+<style>
+
+.glass-card {
+    position: relative;
+    z-index: 1;
+}
+
+html, body {
+    background: #050505;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 700px;
+    height: 400px;
+    background: rgba(135, 213, 255, 0.22);
+    filter: blur(260px);
+    top: 6%;
+    right: 50%;
+    z-index: 0;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    width: 1200px;
+    height: 500px;
+    background: rgba(242, 0, 255, 0.33);
+    filter: blur(220px);
+    top: 60%;
+    left: 10%;
+    z-index: 0;
+}
+
+</style>
+<div class="container py-5">
+<div class="text-left mb-5">
+    <div class="text-center mb-4">
+        <div class="p-4">
+            <h1 class="fw-bold text-warning bounce-entry">Our Bakery Products</h1>
+            <p class="lead text-white">
+                Freshly baked with love - cakes, breads & sweet delights.
+            </p>
+        </div>
+    </div>    
+    </div>
+<style>
+
+    .search-box {
+    max-width: 600px;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease;
+}
+
+.search-box:focus-within {
+    box-shadow: 0 10px 30px rgba(220, 53, 69, 0.25);
+}
+
+.search-icon {
+    background: white;
+    border: none;
+    padding-left: 20px;
+    color: #6c757d;
+}
+
+.search-input {
+    border: none;
+    padding: 14px 16px;
+    font-size: 15px;
+}
+
+.search-input:focus {
+    box-shadow: none;
+}
+
+.search-btn {
+    background: linear-gradient(135deg, #ff9500, #ff9500);
+    color: #fff;
+    border: none;
+    padding: 0 26px;
+    transition: all 0.3s ease;
+}
+
+.glass-card {
+    background: linear-gradient(135deg, 
+        rgba(139, 69, 19, 0.25),
+        rgba(255, 140, 0, 0.15),
+        rgba(255, 215, 0, 0.1)
+    );
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(255, 140, 0, 0.2),
+        0 4px 16px rgba(139, 69, 19, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(255, 215, 0, 0.6),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.glass-card:hover::before {
+    opacity: 1;
+}
+
+.glass-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: linear-gradient(135deg, 
+        rgba(139, 69, 19, 0.35),
+        rgba(255, 140, 0, 0.25),
+        rgba(255, 215, 0, 0.2)
+    );
+    border-color: rgba(255, 215, 0, 0.5);
+    box-shadow: 
+        0 16px 48px rgba(255, 140, 0, 0.3),
+        0 8px 24px rgba(139, 69, 19, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.glass-card img {
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+}
+
+.snacks-section {
+    background-color: #1c1c1c; /* dark elegant background */
+}
+.glass-card .btn-danger {
+    background: linear-gradient(135deg, #ff6b35, #ff8c42);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    transition: all 0.3s ease;
+}
+
+.glass-card .btn-danger:hover {
+    background: linear-gradient(135deg, #ff5722, #ff7043);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.glass-card .btn-info {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.glass-card .btn-info:hover {
+    background: linear-gradient(135deg, #5a67d8, #6b46c1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.glass-card .btn-success {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);
+    transition: all 0.3s ease;
+}
+
+.glass-card .btn-success:hover {
+    background: linear-gradient(135deg, #0f766e, #22c55e);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+}
+
+.price-text {
+    color: #ffd700;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+}
+
+.star-rating {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 8px;
+}
+
+.star {
+    color: #ddd;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+.star.filled {
+    color: #ffc107;
+}
+
+.star.half-filled {
+    background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.rating-info {
+    font-size: 12px;
+    color: #ccc;
+    margin-left: 8px;
+}
+
+.special-badge {
+    position: absolute;
+    top: 15px;
+    right: -30px;
+    background: #e91e63;
+    color: #fff;
+    padding: 6px 40px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transform: rotate(45deg);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+    z-index: 5;
+}
+
+/* Special product card highlighting */
+.glass-card.special-product {
+    background: linear-gradient(135deg, 
+        rgba(255, 215, 0, 0.15),
+        rgba(255, 193, 7, 0.1)
+    );
+    border: 1.8px solid rgb(255, 0, 115);
+    box-shadow: 
+        0 8px 32px rgba(255, 215, 0, 0.2),
+        0 4px 16px rgba(255, 193, 7, 0.15),
+        inset 0 1px 0 rgba(255, 215, 0, 0.2);
+}
+
+.glass-card.special-product::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(255, 0, 106, 0.6),
+        transparent
+    );
+}
+
+.glass-card.special-product:hover {
+    background: linear-gradient(135deg, 
+        rgba(255, 0, 119, 0.25),
+        rgba(255, 7, 123, 0.2)
+    );
+    border-color: rgba(255, 0, 115);
+    box-shadow: 
+        0 16px 48px rgba(255, 0, 136, 0.3),
+        0 8px 24px rgba(255, 7, 127, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+}
+
+.tt-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, #ffcc00, #ff6a00, #ff2e00);
+    color: #fff;
+    font-weight: 800;
+    padding: 10px 22px;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 5;
+
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+
+    box-shadow: 
+        0 4px 12px rgba(0,0,0,0.3),
+        0 0 15px rgba(255, 94, 0, 0.7);
+}
+
+.to-top{
+    position: fixed;
+    bottom: 100px;
+    right: 25px;   /* change from left to right */
+    left: auto;    /* remove left */
+    width: 50px;
+    height: 50px;
+    background: #ff7a00;
+    color: #fff;
+    borde   r-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s;
+}
+
+.to-top-active{
+    opacity: 1;
+    pointer-events: auto;
+}
+</style>
+<section class="query-banner my-5">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-md-6 text-white text-center text-md-start p-5">
+                <h3 class="fw-bold text-warning bounce-entry">
+                    Bakehouse 
+                </h3>
+                <p class="lead mt-3">
+                    Our journey began with a simple belief: happiness is best shared. Inspired by our founder’s 
+                    love for bringing people together over freshly baked treats, we create artisanal breads, pastries, 
+                    and cakes that turn everyday moments into something special. Each bake is crafted with care,
+                     using time-honored techniques and a whole lot of love — because the best memories are made around good food.
+                    </p>
+            </div>
+            <div class="col-md-6 text-center p-4">
+                <img src="{% static 'productpage.png' %}"
+                     alt="Bakery Contact"
+                     class="img-fluid rounded-4 shadow">
+              </div>
+          </div>
+      </div>
+</section>
+        <div class="d-flex justify-content-center ">
+            <form class="d-flex justify-content-right my-4" method="GET" action="{% url 'product' %}">                                                                                                                                                          
+                <div class="input-group search-box">                                                                                                                                                            
+                    <span class="input-group-text search-icon">                                                                                                                                                      
+                        <i class="bi bi-search"></i>                                                                                                                                                            
+                    </span>                                                                                                                                                         
+                    <input                                                                                                                                                          
+                        type="text"                                                                                                                                                             
+                        class="form-control search-input"                                                                                                                                                           
+                        placeholder="Search products..."                                                                                                                                                            
+                        name="search"                                                                                                                                                           
+                        value="{{ search_query|default:'' }}"                                                                                                                                                           
+                    >                                                                                                                                                           
+
+                    <button class="btn search-btn bounce-hover" type="submit">                                                                                                                                                          
+                        <b>Search<b>                                                                                                                                                            
+                    </button>                                                                                                                                                           
+                </div>                                                                                                                                                          
+            </form>                                                                                                                                                         
+        </div>                                                                                                                                                          
+
+<a href="#" class="to-top">
+    <i class="fas fa-arrow-up"></i> 
+</a>    
+<script src="{% static 'js/animations.js' %}"></script>
+<script>
+const toTop = document.querySelector(".to-top");
+let isScrolling = false;
+let scrollTimeout;
+
+window.addEventListener("scroll", () => {
+    if (!isScrolling) {
+        window.requestAnimationFrame(() => {
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                    if (scrollPosition > 300) {
+                toTop.classList.add("to-top-active");
+            } else {
+                toTop.classList.remove("to-top-active");
+            }
+            
+            isScrolling = false;
+        });
+        isScrolling = true;
+    }
+    
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+    }, 100);
+});
+
+toTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    const startPosition = window.pageYOffset;
+    const targetPosition = 0;
+    const distance = targetPosition - startPosition;
+    const duration = 3000;
+    let start = null;
+    
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+        function animateScroll(currentTime) {
+        if (start === null) start = currentTime;
+        const timeElapsed = currentTime - start;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        const easeProgress = easeInOutCubic(progress);
+        const currentPosition = startPosition + (distance * easeProgress);
+        
+        window.scrollTo(0, currentPosition);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animateScroll);
+        } else {
+         
+            window.scrollTo(0, 0);
+        }
+    }
+            requestAnimationFrame(animateScroll);
+        });
+
+        toTop.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                toTop.click();
+            }
+        });
+        </script>
+        <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://bakery.app.n8n.cloud/webhook/959ae02a-17cf-40d0-bba0-e9ccd4b7074e/chat'
+	});
+</script>
+        <div class="row g-4">
+            {% for p in products %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm fade-in-up glass-card bounce-hover stagger-bounce-item {% if p.is_special %}special-product{% endif %}">
+                    {% if p.is_special %}
+                    <div class="special-badge">
+                        Special
+                    </div> 
+                    {% endif %}
+                    {% if p.is_trending %}
+                    <div class="tt-badge">Trending</div>
+                    {% endif %}
+                    {% if p.image %}
+                    <img src="{{ p.image.url }}"
+                         class="text-warning card-img-top bounce-hover"
+                         style="height:250px; object-fit:cover;"
+                         alt="{{ p.product_name }}">
+                    {% else %}
+                    <img src="{% static 'product1.avif' %}"
+                         class="text-warning card-img-top bounce-hover"
+                         style="height:250px; object-fit:cover;"
+                         alt="{{ p.product_name }}">
+                    {% endif %}
+
+                    <div class="card-body d-flex flex-column">
+                        <h4 class="text-warning fw-semibold mb-1">
+                            {{ p.product_name }}
+                        </h4>
+                        {% if p.desc %}
+                        <p class="text-white small mb-2">
+                            {{ p.desc|truncatechars:50 }}
+                        </p>
+                        {% endif %}
+
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="star-rating">
+                                {% with avg_rating=p.get_average_rating %}
+                                    {% for i in "12345" %}
+                                        <span class="star {% if forloop.counter <= avg_rating %}filled{% endif %}">★</span>
+                                    {% endfor %}
+                                {% endwith %}
+                            </div>
+                            {% with review_count=p.get_review_count %}
+                                {% if review_count > 0 %}
+                                    <span class="rating-info">{{ p.get_average_rating }} ({{ review_count }})</span>
+                                {% else %}
+                                    <span class="rating-info">No reviews</span>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+
+                        <p class="fw-bold text-warning mb-3 fs-5">
+                             Rs. {{ p.price }}
+                        </p>
+                        <div class="mt-auto">
+                            <div class="d-flex gap-2 mb-2">
+                                <form method="POST" action="{% url 'cart' %}" class="w-50">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_name" value="{{ p.product_name }}">
+                                    <input type="hidden" name="price" value="{{ p.price }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-danger w-100 bounce-hover">
+                                        Add to Cart
+                                    </button> 
+                                </form>
+                            
+                                <a href="{% url 'view_p' p.product_id %}" class="w-50">
+                                    <button class="btn btn-info w-100 bounce-hover">
+                                        View 
+                                    </button>
+                                </a>
+                            </div>
+                            <form method="POST" action="{% url 'payment' %}" class="mt-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_name" value="{{ p.product_name }}">
+                                <input type="hidden" name="price" value="{{ p.price }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-success w-100 exclude-from-cart-handler bounce-hover">
+                                    <i class=""></i> Buy Now                                                                
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    {% empty %}
+    <div class="col-12 text-center">
+        <p class="text-white">
+            {% if search_query %}
+                No products found for "{{ search_query }}"
+            {% else %}
+                No products available yet.
+            {% endif %}
+        </p>
+    </div>
+    {% endfor %}
+</div>
+<br>
+<div class="query-section text-center mb-5">
+    <div class="query-card p-5">
+
+        <h3 class="fw-bold bakery-heading mb-4">
+            For Queries & Orders
+        </h3>
+
+        <div class="video-wrapper mb-4">
+            <video class="bakery-video" autoplay muted loop playsinline>
+                <source src="{% static 'bakehouse.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+
+        <p class="lead bakery-text">
+            Please contact us with your queries or to discuss your requirements.
+        </p>
+
+        <a href="#" class="btn bakery-btn mt-3">Contact Us</a>
+
+    </div>
+</div>
+<style>
+
+.query-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    max-width: auto;
+    margin: auto;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.bakery-heading {
+    color: #ffc107;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+.video-wrapper {
+    overflow: hidden;
+    border-radius: 20px;
+    
+}
+
+.bakery-video {
+    width: 100%;
+    height: auto;
+    border: 5px solid rgb(255, 217, 0);
+    border-radius: 20px;
+    transition: transform 0.6s ease;
+}
+
+
+
+.bakery-text {
+    color: #f8f9fa;
+    font-size: 1.1rem;
+}
+
+.bakery-btn {
+    background-color: #ffc107;
+    color: #2c1810;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.bakery-btn:hover {
+    background-color: #ffca2c;
+    transform: translateY(-3px);
+}
+</style>     
+              
+    </div>
+</div>
+
+</div>
+{% include 'pages/footer.html'%}

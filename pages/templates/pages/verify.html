@@ -1,0 +1,127 @@
+{% load static %}
+{% include 'pages/header.html' with title="Bakehouse - change_password" %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card glass-card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-warning mb-2">Verification</h2>
+                        <p class="text-muted"></p>
+                    </div>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'otp' %}">
+                        {% csrf_token %}
+                        
+                        {% if next %}
+                            <input type="hidden" name="next" value="{{ next }}">
+                        {% elif request.GET.next %}
+                            <input type="hidden" name="next" value="{{ request.GET.next }}">
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label for="email" class="text-white form-label fw-bold">Enter email</label>
+                            <input type="email" 
+                                   class="form-control" 
+                                   id="email" 
+                                   name="email" 
+                                   placeholder="Enter email address" 
+                                   required 
+                                   autofocus>
+                        </div>
+                        
+                        <br>
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                <i class="bi bi-check-circle"></i> Verify
+                            </button>
+                        </div>
+                    </form>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    
+
+.glass-card {
+    position: relative;
+    z-index: 1;
+}
+    body {
+    background-color: #000000;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.glass-card {
+    background: rgba(255, 255, 255, 0.26);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.19);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s ease;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: rgba(0, 208, 255, 0.36); /* red glow */
+    filter: blur(140px);
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+}
+
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #ffcd4d;
+        box-shadow: 0 0 0 0.2rem rgba(255, 77, 77, 0.25);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #ffcd4d, #ffffcd4d4d4d);
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 234, 77, 0.4);
+    }
+
+    .alert {
+        border-radius: 8px;
+    }
+</style>
+
+{% include 'pages/footer.html' %}

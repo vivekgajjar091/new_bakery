@@ -1,0 +1,490 @@
+{% load static %}
+{% include 'pages/header.html' with title="Bakehouse - Profile" %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<style>
+
+.glass-card {
+    position: relative;
+    z-index: 1;
+}
+body {
+    background-color: #000000;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+body::after {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: rgba(255, 0, 111, 0.25); /* red glow */
+    filter: blur(140px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+}
+.glass-card {
+    background: rgba(255, 255, 255, 0.26);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.19);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body::after {
+        width: 300px;
+        height: 300px;
+        filter: blur(100px);
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    .card-body {
+        padding: 2rem 1.5rem !important;
+    }
+    
+    .profile-image-container img,
+    .profile-image-container div {
+        width: 80px !important;
+        height: 80px !important;
+        font-size: 2rem !important;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    h4 {
+        font-size: 1.25rem;
+    }
+    
+    .form-control {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    body::after {
+        width: 250px;
+        height: 250px;
+        filter: blur(80px);
+    }
+    
+    .card-body {
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .profile-image-container img,
+    .profile-image-container div {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 1.5rem !important;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.25rem;
+    }
+    
+    h4 {
+        font-size: 1.1rem;
+    }
+    
+    .row > .col-md-6 {
+        margin-bottom: 1rem;
+    }
+    
+    .d-md-flex {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+    }
+    
+    .d-md-flex .btn {
+        width: 100%;
+    }
+    
+    .form-control {
+        padding: 0.625rem;
+        font-size: 0.875rem;
+    }
+    
+    .btn {
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+    }
+}
+</style>
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+            <h1 class="fw-bold text-warning mb-3">Profile Settings</h1>
+            <p class="lead text-white">
+                Manage your account information and preferences
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 mx-auto">
+            <div class="card glass-card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div class="mb-3">
+                            <div class="position-relative d-inline-block profile-image-container">
+                                {% if profile_image %}
+                                    <img src="{{ profile_image.url }}" 
+                                         alt="Profile Picture" 
+                                         class="rounded-circle border border-3 border-warning"
+                                         style="width: 120px; height: 120px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center border border-3 border-warning" 
+                                         style="width: 120px; height: 120px; font-size: 3rem;">
+                                        <i class="bi bi-person-fill"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <h2 class="fw-bold text-warning mb-2"><span>{{ user.first_name|default:user.username }}</span></h2>
+                        <p class="text-white">Manage your account information</p>
+                                {% if user.owner_profile %}
+                            <span class="badge bg-warning">{{ user_type }}</span>
+                                {% elif user.employee_profile %}
+                            <span class="badge bg-success">{{ user_type }}</span>
+
+                        {% endif %}
+                    </div>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'profile' %}" id="profileForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="profile_image" class="form-label fw-bold">Upload Profile Image</label>
+                            <input type="file" 
+                                   class="form-control" 
+                                   id="profile_image" 
+                                   name="profile_image" 
+                                   accept="image/*"
+                                   onchange="previewImage(this)">
+                            <div id="imagePreview" class="mt-3 text-center"></div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <h4 class="fw-bold text-warning mb-3">Personal Information</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="first_name" class="text-white form-label fw-bold">First Name</label>
+                                <input type="text" 
+                                       class="text-white form-control" 
+                                       id="first_name" 
+                                       name="first_name" 
+                                       value="{{ user.first_name }}"
+                                       placeholder="First Name">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="last_name" class="text-white form-label fw-bold">Last Name</label>
+                                <input type="text" 
+                                       class="text-white form-control" 
+                                       id="last_name" 
+                                       name="last_name" 
+                                       value="{{ user.last_name }}"
+                                       placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="text-warning form-label fw-bold">Username</label>
+                            <input type="text" 
+                                   class="text-white form-control" 
+                                   id="username" 
+                                   value="{{ user.username }}"
+                                   disabled
+                                   style="background: rgba(255, 255, 255, 0.05); color: rgba(255, 255, 255, 0.6);">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="text-white form-label fw-bold">Email</label>
+                            <input type="email" 
+                                   class="text-white form-control" 
+                                   id="email" 
+                                   name="email" 
+                                   value="{{ user.email }}"
+                                   placeholder="your.email@example.com" 
+                                   required>
+                        </div>
+
+                        <h4 class="fw-bold text-warning mb-3">Change Password</h4>
+
+                        <div class="mb-3">
+                            {% csrf_token %}
+                            <label for="old_password" class="text-white form-label fw-bold">Current Password</label>
+                            <input type="password" 
+                                   class="text-white form-control" 
+                                   id="old_password" 
+                                   name="old_password" 
+                                   placeholder="">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="new_password" class="text-white form-label fw-bold">New Password</label>
+                            <input type="password" 
+                                   class="text-white form-control" 
+                                   id="new_password" 
+                                   name="new_password" 
+                                   placeholder=""
+                                   minlength="8">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label fw-bold">Confirm New Password</label>
+                            <input type="password" 
+                                   class="text-white form-control" 
+                                   id="confirm_password" 
+                                   name="confirm_password" 
+                                   placeholder="">
+                            <div id="passwordMatch" class="mt-2"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <a href="{% url 'order_history' %}" class="btn btn-primary me-md-2">
+                                <i class=""></i>Order History
+                            </a>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'logout' %}" class="btn btn-secondary me-md-2 w-100 w-md-auto">Logout</a>
+
+                            <button type="submit" class="btn btn-warning w-100 w-md-auto">
+                                <i class=""></i> Update Profile
+                            </button>
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 15px; 
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .form-control:disabled {
+        background: rgba(255, 255, 255, 0.05);
+        cursor: not-allowed;
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-warning {
+        background: linear-gradient(135deg, #ffc107, #ffc107);
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-warning:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 237, 77, 0.4);
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #6c757d, #495057);
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        color: white;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        color: white;
+    }
+
+    .alert {
+        border-radius: 8px;
+    }
+
+    .form-label {
+        color: #ffc107;
+        font-weight: 600;
+    }
+
+    .text-white {
+        color: white !important;
+    }
+                                                                                                                                                                                                                            
+    .text-warning {                                                                                                                                                                                                                                                        
+        color: #ffc107 !important;                                                                                                                                                                                                                                                         
+    }                                                                                                                                                                                                                                                          
+</style>                                                                                                                                                                                                                                                           
+
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://bakery.app.n8n.cloud/webhook/959ae02a-17cf-40d0-bba0-e9ccd4b7074e/chat'
+	});
+</script>
+
+<script>                                                                                                                                                                                                                                                           
+document.addEventListener('DOMContentLoaded', function() {                                                                                                                                                                                                                                                         
+    const newPassword = document.getElementById('new_password');                                                                                                                                                                                                                                                           
+    const confirmPassword = document.getElementById('confirm_password');                                                                                                                                                                                                                                                           
+    const passwordMatch = document.getElementById('passwordMatch');                                                                                                                                                                                                                                                        
+    const form = document.getElementById('profileForm');                                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                            
+    function checkPasswordMatch() {                                                                                                                                                                                                                                                        
+        const oldPassword = document.getElementById('old_password').value;                                                                                                                                                                                                                                                         
+        const newPass = newPassword.value;                                                                                                                                                                                                                                                         
+        const confirmPass = confirmPassword.value;                                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                    
+        if (!oldPassword && !newPass && !confirmPass) {                                                                                                                                                                                                                                                        
+            passwordMatch.innerHTML = '';
+            return;
+        }
+        
+        if (confirmPass === '') {
+            passwordMatch.innerHTML = '';
+            return;
+        }
+        
+        if (newPass === confirmPass && newPass.length >= 8) {
+            passwordMatch.innerHTML = '<small class="text-success"><i class="bi bi-check-circle"></i> Passwords match</small>';
+            confirmPassword.setCustomValidity('');
+        } else if (newPass !== confirmPass) {
+            passwordMatch.innerHTML = '<small class="text-warning"><i class="bi bi-x-circle"></i> Passwords do not match</small>';
+            confirmPassword.setCustomValidity('Passwords do not match');
+        } else {
+            passwordMatch.innerHTML = '<small class="text-warning"><i class="bi bi-x-circle"></i> Password must be at least 8 characters</small>';
+            confirmPassword.setCustomValidity('Password must be at least 8 characters');
+        }
+    }
+
+    newPassword.addEventListener('input', checkPasswordMatch);
+    confirmPassword.addEventListener('input', checkPasswordMatch);
+
+    form.addEventListener('submit', function(e) {
+        const oldPassword = document.getElementById('old_password').value;
+        const newPass = newPassword.value;
+        const confirmPass = confirmPassword.value;
+        
+        // If any password field is filled, all must be filled
+        if (oldPassword || newPass || confirmPass) {
+            if (!oldPassword) {
+                e.preventDefault();
+                alert('Please enter your current password to change it.');
+                return false;
+            }
+            if (!newPass) {
+                e.preventDefault();
+                alert('Please enter a new password.');
+                return false;
+            }
+            if (newPass.length < 8) {
+                e.preventDefault();
+                alert('New password must be at least 8 characters long.');
+                return false;
+            }
+            if (newPass !== confirmPass) {
+                e.preventDefault();
+                alert('New passwords do not match!');
+                return false;
+            }
+        }
+        
+
+        const imageInput = document.getElementById('profile_image');
+        if (imageInput.files.length > 0) {
+            const file = imageInput.files[0];
+            if (file.size > 5 * 1024 * 1024) {
+                e.preventDefault();
+                alert('Image file size must be less than 5MB.');
+                return false;
+            }
+        }
+    });
+    
+    function previewImage(input) {
+        const preview = document.getElementById('imagePreview');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                
+                <img src="${e.target.result}" 
+                         alt="Preview" 
+                         class="rounded-circle border border-2 border-warning"
+                         style="width: 100px; height: 100px; object-fit: cover;">
+                    <p class="text-muted mt-2 small">Image Preview</p>
+                `;
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.innerHTML = '';
+        }
+    } 
+});
+</script>
+{% include 'pages/footer.html' %}

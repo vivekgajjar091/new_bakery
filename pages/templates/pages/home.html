@@ -1,0 +1,1243 @@
+{% load static %}
+{% include 'pages/header.html' with title="Bakehouse - Home" %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="{% static 'js/animations.js' %}"></script>
+
+<style>
+.glass-card {
+    position: relative;
+    z-index: 1;
+}
+html, body {
+    background: #050505;
+    position: relative;
+    overflow-x: hidden;
+}
+body::before {
+    content: "";
+    position: absolute;
+    width: 900px;
+    height: 700px;
+    background: rgba(157, 60, 255, 0.36);
+    filter: blur(220px);
+    top: 37%;
+    left: 15%;
+    z-index: 0;
+}
+[data-app-container] {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+canvas {
+  width: 100%;
+  height: 100%;
+}
+.glass-card {
+    background: linear-gradient(135deg, 
+        rgba(139, 69, 19, 0.25),
+        rgba(255, 140, 0, 0.15),
+        rgba(255, 215, 0, 0.1)
+    );
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(255, 140, 0, 0.2),
+        0 4px 16px rgba(139, 69, 19, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(255, 215, 0, 0.6),
+        transparent
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.glass-card:hover::before {
+    opacity: 1;
+}
+
+.glass-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: linear-gradient(135deg, 
+        rgba(139, 69, 19, 0.35),
+        rgba(255, 140, 0, 0.25),
+        rgba(255, 215, 0, 0.2)
+    );
+
+    border-color: rgba(255, 215, 0, 0.5);
+    box-shadow: 
+        0 16px 48px rgba(255, 140, 0, 0.3),
+        0 8px 24px rgba(139, 69, 19, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.glass-card img {
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+}
+
+.snacks-section {
+    background-color: #1c1c1c; /* dark elegant background */
+}
+.scroll-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding: 20px 0;
+}
+
+.scroll-track {
+    display: flex;
+    width: max-content;
+    animation: scroll-horizontal 30s linear infinite;
+}
+
+.row.flex-nowrap {
+    flex-wrap: nowrap;
+}
+.scroll-wrapper {
+    width: 100%;
+    overflow: hidden;
+    padding: 40px 20px;   /* OUTER SPACE */
+}
+
+.scroll-track {
+    display: flex;
+    gap: 24px;            /* SPACE BETWEEN CARDS */
+    width: max-content;
+    animation: scroll 35s linear infinite;
+}
+.scroll-item {
+    flex: 0 0 auto;
+}
+
+.scroll-card {
+    width: 280px;
+    height: 360px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.scroll-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.scroll-card .card-body {
+    padding: 16px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.scroll-wrapper:hover .scroll-track {
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+.glass-card .btn-danger {
+    background: linear-gradient(135deg, #ff6b35, #ff8c42);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    transition: all 0.3s ease;
+}
+
+
+.btn-danger:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+.glass-card .btn-success {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);
+    transition: all 0.3s ease;
+}
+.hero-carousel {
+    position: relative;
+}
+
+.hero-img {
+    height: 90vh;
+    object-fit: cover;
+    animation: zoom 8s ease-in-out infinite;
+}
+
+@keyframes zoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.3)
+    );
+    z-index: 1;
+}
+
+.hero-caption {
+    z-index: 2;
+    bottom: 30%;
+    text-align: left;
+    max-width: 600px;
+    animation: fadeSlide 1.2s ease forwards;
+}
+
+.hero-caption h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.hero-caption p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 20px;
+}
+
+.hero-btn {
+    background: #f8c146;
+    color: #000;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.hero-btn:hover {
+    background: #ffb703;
+    transform: translateY(-2px);
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #f8c146;
+}
+
+@media (max-width: 768px) {
+    .hero-caption {
+        bottom: 20%;
+        text-align: center;
+    }
+
+    .hero-caption h1 {
+        font-size: 2.2rem;
+    }
+}
+
+.carousel-indicators.progress-style {
+    bottom: 20px;
+}
+
+.carousel-indicators.progress-style button {
+    width: 25px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.68);
+    border-radius: 10px;
+    transition: all 1s ease;
+}
+
+.carousel-indicators.progress-style .active {
+    background: linear-gradient(90deg, #ffcc00, #ffcc00);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0);
+}
+
+
+.feature-box {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+.feature-box,
+.feature-img img {
+    border-radius: 16px;
+}
+
+.feature-box p {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.feature-img img {
+    filter: brightness(0.85);
+}
+.container-fluid {
+    background: linear-gradient(135deg, #ffd00033, #000000, #ffd00033);
+}
+html {scroll-behavior: smooth;}
+    
+
+.stats-section {
+    display: flex;
+    gap: 30px;
+    padding: 60px 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stat-box {
+    flex: 1;
+    min-width: 220px;
+    padding: 30px 20px;
+    text-align: center;
+    
+  background: rgba(255, 255, 255, 0.30);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.19);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s ease;
+}
+
+.stat-box img {
+    width: 90px;
+    margin-bottom: 15px;
+   
+}
+
+.stat-box h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 10px 0;
+    color: #ffcc00;
+}
+
+.stat-box p {
+    font-size: 18px;
+    color: #ffffff;
+    line-height: 1.4;
+}
+
+.glass-card .btn-info {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.glass-card .btn-info:hover {
+    background: linear-gradient(135deg, #5a67d8, #6b46c1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.glass-card .btn-danger:hover {
+    background: linear-gradient(135deg, #ff5722, #ff7043);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+.glass-card .btn-success:hover {
+    background: linear-gradient(135deg, #0f766e, #22c55e);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+}
+
+.special-badge {
+    position: absolute;
+    top: 15px;
+    right: -30px;
+    background: #e91e63;
+    color: #fff;
+    padding: 6px 40px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transform: rotate(45deg);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+    z-index: 5;
+}
+
+.glass-card.special-product {
+    background: linear-gradient(135deg, 
+        rgba(255, 215, 0, 0.15),
+        rgba(255, 193, 7, 0.1)
+    );
+    border: 1.8px solid rgba(255, 0, 115);
+    box-shadow: 
+        0 8px 32px rgba(255, 215, 0, 0.2),
+        0 4px 16px rgba(255, 193, 7, 0.15),
+        inset 0 1px 0 rgba(255, 215, 0, 0.2);
+}
+
+.glass-card.special-product::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(255, 0, 106, 0.6),
+        transparent
+    );
+}
+
+.glass-card.special-product:hover {
+    background: linear-gradient(135deg, 
+        rgba(255, 0, 119, 0.25),
+        rgba(255, 7, 123, 0.2)
+    );
+    border-color: rgba(255, 0, 115);
+    box-shadow: 
+        0 16px 48px rgba(255, 0, 136, 0.3),
+        0 8px 24px rgba(255, 7, 127, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.card{
+    position: relative;
+    overflow: hidden;
+}
+
+.tt-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, #ffcc00, #ff6a00, #ff2e00);
+    color: #fff;
+    font-weight: 800;
+    padding: 10px 22px;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 5;
+
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+
+    box-shadow: 
+        0 4px 12px rgba(0,0,0,0.3),
+        0 0 15px rgba(255, 94, 0, 0.7);
+}
+
+.bb-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+
+    background: rgba(0, 0, 0, 0.68);  /* soft glass */
+    color: #e8e8e8;                         /* soft white */
+
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    padding: 6px 14px;
+    border-radius: 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    backdrop-filter: blur(6px);
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+
+    z-index: 5;
+}
+
+.star-rating {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 8px;
+}
+
+.star {
+    color: #ddd;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+.star.filled {
+    color: #ffc107;
+}
+
+.star.half-filled {
+    background: linear-gradient(90deg, #ffc107 50%, #ddd 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.rating-info {
+    font-size: 12px;
+    color: #ccc;
+    margin-left: 8px;
+}
+
+.to-top{
+    position: fixed;
+    bottom: 100px;
+    right: 25px;   /* change from left to right */
+    left: auto;    /* remove left */
+    width: 50px;
+    height: 50px;
+    background: #ff7a00;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s;
+}
+
+.to-top-active{
+    opacity: 1;
+    pointer-events: auto;
+}
+</style>
+<a href="#" class="to-top">
+    <i class="fas fa-arrow-up"></i> 
+</a>
+<script src="{% static 'js/animations.js' %}"></script>
+<script>
+const toTop = document.querySelector(".to-top");
+let isScrolling = false;
+let scrollTimeout;
+
+window.addEventListener("scroll", () => {
+    if (!isScrolling) {
+        window.requestAnimationFrame(() => {
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollPosition > 300) {
+                toTop.classList.add("to-top-active");
+            } else {
+                toTop.classList.remove("to-top-active");
+            }
+            
+            isScrolling = false;
+        });
+        isScrolling = true;
+    }
+});
+
+toTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    const startPosition = window.pageYOffset;
+    const targetPosition = 0;
+    const distance = targetPosition - startPosition;    
+    const duration = 3000; 
+    let start = null;
+    
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    function animateScroll(currentTime) {
+        if (start === null) start = currentTime;
+        const timeElapsed = currentTime - start;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        const easeProgress = easeInOutCubic(progress);
+        const currentPosition = startPosition + (distance * easeProgress);
+        
+        window.scrollTo(0, currentPosition);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animateScroll);
+        } else {
+
+            window.scrollTo(0, 0);
+        }
+    }
+    requestAnimationFrame(animateScroll);
+});
+
+toTop.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toTop.click();
+    }
+});
+</script>
+<div id="heroCarousel" class="carousel slide carousel-fade hero-carousel"
+     data-bs-ride="carousel" data-bs-interval="4500">
+
+   <div class="carousel-indicators progress-style">
+    <button data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+        <button data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+    <button data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+</div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{% static 'slider1.png' %}" class="d-block w-100 hero-img" alt="Cookies">
+            <div class="hero-overlay"></div>
+            <div class="carousel-caption hero-caption">
+                <h1>Delicious Cookies</h1>
+                <p>Freshly baked with love & premium ingredients</p>
+                <a href="product" class="btn hero-btn">Order Now</a>
+            </div>
+        </div>
+
+        <div class="carousel-item">
+            <img src="{% static 'slider2.png' %}" class="d-block w-100 hero-img" alt="Bread">
+            <div class="hero-overlay"></div>
+            <div class="carousel-caption hero-caption">
+                <h1>Fresh Bread</h1>
+                <p>Warm, soft & crunchy every morning</p>
+                <a href="about" class="btn hero-btn">Explore</a>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'slider3.png' %}" class="d-block w-100 hero-img" alt="Cakes">
+            <div class="hero-overlay"></div>
+            <div class="carousel-caption hero-caption">
+                <h1>Signature Cakes</h1>
+                <p>Baked daily for your sweetest moments</p>
+                <a href="product" class="btn hero-btn">View Cakes</a>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+<br>
+<section class="py-5 fade-in-up">
+    <div class="container">
+        <div class="text-center mb-4">
+            <div data-app-container></div>
+            <p class="text-white mt-2">
+                Since 2004, we've been serving our guests the best quality treats,<br>
+                traditionally made and presented with care.
+            </p>
+        </div>
+        <div class="row align-items-center text-center text-md-start">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm fade-in-up glass-card p-4 mb-4">
+                    <h4 class="fw-bold text-warning">Authentic Recipes</h4>
+                    <p class="text-white">
+                        Our products are based on traditional home-style recipes using fresh ingredients,
+                         crafted with time-honored techniques that highlight authentic flavors and wholesome quality.
+                    </p>
+                </div>
+                <div class="card h-100 shadow-sm fade-in-up glass-card p-4">
+                    <h4 class="fw-bold text-warning mt-4">Baked With Love</h4>
+                    <p class="text-white">
+                      Our passion for baking is poured into every recipe, serving smiles every day
+                       through comforting flavors, thoughtful craftsmanship, and a love for sharing good food.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center my-4 my-md-0">
+                <img src="{% static 'bakehouse.png' %}" 
+                     class="img-fluid floating"
+                     alt="Bakehouse Illustration"
+                     style="max-height:600px;">
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm fade-in-up glass-card p-4 mb-4">
+                    <h4 class="fw-bold text-warning">Committed To Quality</h4>
+                    <p class="text-white">
+                        From carefully selected ingredients to smooth kitchen operations and genuinely welcoming guest service,
+                         quality always comes first. We believe great food and great service go hand in hand to create memorable moments for every guest.
+                    </p>
+                </div>
+                <div class="card h-100 shadow-sm fade-in-up glass-card p-4">
+                    <h4 class="fw-bold text-warning mt-4">Honestly Priced</h4>
+                    <p class="text-white">
+                        We strive to offer the best products at fair and honest prices.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center p-4">
+            <a href="{% url 'about' %}" class="btn btn-warning px-4 py-2 rounded-pill">
+                Know More
+            </a>
+        </div>
+    </div>
+</section>
+<div class="container">
+    
+    <!-- Heading Section -->
+    <div class="text-center">
+        <h1 class="fw-bold text-warning fade-in-up">Our Top 4 Best Seller</h1>
+        <p class="lead text-white">
+           Our most popular products based on customer orders - these are the treats that keep our customers coming back for more!
+        </p>
+    </div>
+
+    <br>
+    <div class="row g-4">
+        {% for p in best_selling_products %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            
+            <div class="card glass-card h-100 fade-in-up {% if p.is_special %}special-product{% endif %}">
+                
+                {% if p.is_special %}
+                <div class="special-badge">Special</div>
+                {% endif %}
+
+                {% if p.image %}
+                <img src="{{ p.image.url }}"
+                     class="card-img-top"
+                     style="height:250px; object-fit:cover;"
+                     alt="{{ p.product_name }}">
+                {% else %}
+                <img src="{% static 'product1.avif' %}"
+                     class="card-img-top"
+                     style="height:250px; object-fit:cover;"
+                     alt="{{ p.product_name }}">
+                {% endif %}
+
+                <div class="card-body d-flex flex-column">
+
+                    <h4 class="text-warning fw-semibold mb-1">
+                        {{ p.product_name }}
+                    </h4>
+
+                    <div class="mb-2">
+                        <span class="badge bb-badge">Best Seller</span>
+                    </div>
+
+                    {% if p.desc %}
+                    <p class="card-text text-white small">
+                        {{ p.desc|truncatewords:12 }}
+                    </p>
+                    {% endif %}
+
+                    <!-- Rating -->
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="star-rating">
+                            {% with avg_rating=p.get_average_rating %}
+                                {% for i in "12345" %}
+                                    <span class="star {% if forloop.counter <= avg_rating %}filled{% endif %}">★</span>
+                                {% endfor %}
+                            {% endwith %}
+                        </div>
+
+                        {% with review_count=p.get_review_count %}
+                            {% if review_count > 0 %}
+                                <span class="rating-info ms-2">
+                                    {{ p.get_average_rating }} ({{ review_count }})
+                                </span>
+                            {% else %}
+                                <span class="rating-info ms-2">No reviews</span>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+
+                    <p class="fw-bold text-warning mb-3 fs-5">
+                        Rs. {{ p.price }}
+                    </p>
+
+                    <!-- Buttons -->
+                    <div class="mt-auto">
+
+                        <div class="d-flex gap-2 mb-2">
+
+                            <form method="POST" action="{% url 'cart' %}" class="w-50">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_name" value="{{ p.product_name }}">
+                                <input type="hidden" name="price" value="{{ p.price }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-danger w-100 bounce-hover">
+                                    Add to Cart
+                                </button>
+                            </form>
+
+                            <a href="{% url 'view_p' p.product_id %}" class="w-50">
+                                <button type="button" class="btn btn-info w-100 bounce-hover">
+                                    View
+                                </button>
+                            </a>
+
+                        </div>
+
+                        <form method="POST" action="{% url 'payment' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_name" value="{{ p.product_name }}">
+                            <input type="hidden" name="price" value="{{ p.price }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-success w-100 bounce-hover">
+                                Buy Now
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-white">
+                No best-selling products available yet. Products will appear here once customers start placing orders.
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+<br>
+<br>
+<div class="container">
+    <div class="text-center">
+
+        <h1 class="fw-bold text-warning fade-in-up">Trending Products</h1>
+        <p class="lead text-white">
+            Our made-to-order range of speciality cakes is here to make any celebration great! From Bakehouse Trending
+             cakes to gourmet cakes to customized theme cakes, we have something for every special occasion. 
+        </p>
+
+    <div class="row g-4">
+        {% for p in products %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card glass-card h-100 fade-in-up {% if p.is_special %}special-product{% endif %}">
+                {% if p.is_special %}<div class="special-badge">
+                    Special
+                </div> {% endif %}
+                {% if p.image %}
+                <img src="{{ p.image.url }}"
+                     class="card-img-top"
+                     style="height:250px; object-fit:cover;"
+                     alt="{{ p.product_name }}">
+                {% else %}
+                <img src="{% static 'product1.avif' %}"
+                     class="card-img-top"
+                     style="height:250px; object-fit:cover;"
+                     alt="{{ p.product_name }}">
+                {% endif %}
+
+                <div class="card-body d-flex flex-column">
+                    <h4 class="text-warning fw-semibold mb-1">
+                        {{ p.product_name }}
+                    </h4>
+
+                    <div class="mb-2">
+                        <span class="badge tt-badge">Trending</span>
+                    </div>
+
+                    {% if p.desc %}
+                    <p class="text-white small mb-2">
+                        {{ p.desc|truncatechars:50 }}
+                    </p>
+                    {% endif %}
+
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="star-rating">
+                            {% with avg_rating=p.get_average_rating %}
+                                {% for i in "12345" %}
+                                    <span class="star {% if forloop.counter <= avg_rating %}filled{% endif %}">★</span>
+                                {% endfor %}
+                            {% endwith %}
+                        </div>
+                        {% with review_count=p.get_review_count %}
+                            {% if review_count > 0 %}
+                                <span class="rating-info">{{ p.get_average_rating }} ({{ review_count }})</span>
+                            {% else %}
+                                <span class="rating-info">No reviews</span>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+
+                    <p class="fw-bold text-warning mb-3 fs-5">
+                        Rs. {{ p.price }}
+                    </p>
+                    <div class="mt-auto">
+                        <div class="d-flex gap-2 mb-2">
+                            <form method="POST" action="{% url 'cart' %}" class="w-50">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_name" value="{{ p.product_name }}">
+                                <input type="hidden" name="price" value="{{ p.price }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-danger w-100 bounce-hover">
+                                    Add to Cart
+                                </button>
+                            </form>
+                        
+                            <a href="{% url 'view_p' p.product_id %}" class="w-50">
+                                <button class="btn btn-info w-100 bounce-hover">
+                                    View 
+                                </button>
+                            </a>
+                        </div>
+                        <form method="POST" action="{% url 'payment' %}" class="mt-2">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_name" value="{{ p.product_name }}">
+                            <input type="hidden" name="price" value="{{ p.price }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-success w-100 exclude-from-cart-handler bounce-hover">
+                                <i class=""></i> Buy Now                                                                
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">
+                No products available yet. Please add products from the admin panel.
+            </p>
+        </div>
+        
+        {% endfor %}
+        
+        </div>
+        <br>
+            <div class="text-center mt-4">
+            <a href="{% url 'product' %}" class="btn btn-warning px-4 py-2 rounded-pill">
+                View All Products
+            </a>
+        </div>
+    <section class="stats-section">
+    <div class="stat-box">
+        <img src="{% static 'earth.gif' %}" alt="Globe">
+        <h2>300+</h2>
+        <p>Outlets across the<br>globe</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat-box">
+        <img src="{% static 'cake.gif' %}" alt="Cake">
+        <h2>1M+</h2>
+        <p>Cakes sold<br>worldwide</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat-box">
+        <img src="{% static 'bakery.gif' %}" alt="Store">
+        <h2>3+</h2>
+        <p>Countries we<br>are in</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat-box">
+        <img src="{% static 'cupcake.gif' %}" alt="Cupcake">
+        <h2>1k+</h2>
+        <p>Varieties of<br>products</p>
+    </div>
+</section>
+    <div class="text-center my-5">
+<div class="">
+
+        <h1 class="fw-bold text-warning fade-in-up">
+            Let's buy some snacks and sweets 
+        </h1>
+        <p class="lead text-white">
+            Here’s our assorted range of delicious products!
+        </p>
+    </div>
+
+</div>
+<div class="scroll-wrapper">
+    <div class="scroll-track">
+
+        <!-- CARD -->
+        <div class="scroll-item">
+            <div class="card scroll-card glass-card">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'cakes.png' %}" alt="bread">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="fw-bold text-warning">-Cakes-</h5>
+                    <p class="text-white">Rich, handcrafted cakes made to turn every celebration into a sweet memory.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-item">
+            <div class="card scroll-card glass-card">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'puffs.png' %}" alt="Cakes">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="fw-bold text-warning">-Puffs-</h5>
+                    <p class="text-white">Golden, flaky puffs filled with savory goodness for a satisfying snack.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-item">
+            <div class="card scroll-card glass-card">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'coockes.png' %}" alt="Bread">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="fw-bold text-warning">-Cookies-</h5>
+                    <p class="text-white">Freshly baked cookies with irresistible flavor and perfect texture in every bite.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-item">
+            <div class="card scroll-card glass-card">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'cupcakes.png' %}" alt="Cupcakes">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="fw-bold text-warning">-Cupcake-</h5>
+                    <p class="text-white">Soft, flavorful cupcakes topped with smooth frosting for a delightful treat.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-item">
+            <div class="card scroll-card glass-card">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'breads.png' %}" alt="bread">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="fw-bold text-warning">-breads-</h5>
+                    <p class="text-white">Soft, flavorful bread topped with smooth frosting for a delightful morning.</p>
+                </div>
+            </div>
+        </div>
+
+       <div class="scroll-item">
+            <div class="card scroll-card glass-card">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'cakes.png' %}" alt="bread">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="fw-bold text-warning">-Cakes-</h5>
+                    <p class="text-white">Rich, handcrafted Bread made to turn every celebration into a sweet memory.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-item">
+            <div class="card scroll-card glass-card">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'puffs.png' %}" alt="Cakes">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="fw-bold text-warning">-Puffs-</h5>
+                    <p class="text-white">Golden, flaky puffs filled with savory goodness for a satisfying snack.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-item">
+            <div class="card scroll-card glass-card">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'coockes.png' %}" alt="Bread">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="fw-bold text-warning">-Cookies-</h5>
+                    <p class="text-white">Freshly baked cookies with irresistible flavor and perfect texture in every bite.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-item">
+            <div class="card scroll-card glass-card">
+                <a href="{% url 'product' %}">
+                    <img src="{% static 'cupcakes.png' %}" alt="Cupcakes">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="fw-bold text-warning">-Cupcake-</h5>
+                    <p class="text-white">Soft, flavorful cupcakes topped with smooth frosting for a delightful treat.</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="text-center mt-4">
+            <a href="{% url 'product' %}" class="btn btn-warning px-4 py-2 rounded-pill">
+                Click to choose
+            </a>
+        </div>
+    <div class="container-fluid my-5 px-0">
+    <div class="row g-0">
+                <div class="col-md-3 feature-img">          
+            <img src="{% static 'gemini_2.png' %}" class="img-fluid w-100 h-100" style="object-fit:cover;">
+        </div>
+        <div class="col-md-3 d-flex align-items-center text-center subtle feature-box">
+            <div class="p-5">
+                <h3 class="fw-bold text-white">White Cranberry Chocolate</h3>
+                <p>A luxurious blend of creamy cocoa, cranberries, and premium hazelnuts.</p>
+                <a href="product" class="btn btn-warning px-4">Explore Now</a>
+            </div>
+        </div>
+
+        <div class="col-md-3 feature-img">
+            <img src="{% static 'gemini_1.png' %}" class="img-fluid w-100 h-100" style="object-fit:cover;">
+        </div>
+        <div class="col-md-3 d-flex align-items-center text-center subtle feature-box">
+            <div class="p-5">
+                <h3 class="fw-bold text-white">Milk Fruit & Nut Chocolate</h3>
+                <p>Rich milk chocolate infused with crunchy nuts and juicy dried fruits.</p>
+                <a href="product" class="btn btn-warning px-4">Explore Now</a>
+            </div>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-center text-center  feature-box">
+            <div class="p-5">
+                <h3 class="fw-bold text-white">Royal Hazelnut Cookies</h3>
+                <p>Golden baked cookies enriched with cocoa solids and roasted hazelnuts.</p>
+                <a href="product" class="btn btn-warning px-4">Explore Now</a>
+            </div>
+        </div>
+        <div class="col-md-3 feature-img">
+            <img src="{% static 'gemini_3.png' %}" class="img-fluid w-100 h-100" style="object-fit  :cover;">
+        </div>  
+        <div class="col-md-3 d-flex align-items-center text-center  feature-box">
+            <div class="p-5">
+                <h3 class="fw-bold text-white">Pastry</h3>
+                <p>Soft, flaky pastries baked to perfection with rich, indulgent fillings.</p>
+                <a href="product" class="btn btn-warning px-4">Explore Now</a>
+            </div>
+        </div>
+        <div class="col-md-3 feature-img">
+            <img src="{% static 'gemini_4.png' %}" class="img-fluid w-100 h-100" style="object-fit:cover;">
+        </div>
+    </div>
+</div>
+<div class="container my-5 text-center testimonial-section">
+<div class="p-4">
+
+<h3 class="fw-bold text-warning">What People Are Saying</h3>
+    <div id="testimonialCarousel" class="carousel slide fade-in-left" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <p class="text-white fst-italic fs-5 px-5">
+                 <h6 class="text-white">  “The quality and freshness of Bakehouse products are unmatched.
+                    Every item tastes homemade and full of flavor. Highly recommended!”</h6>
+                </p>
+                <h6 class="fw-bold mt-3 text-warning">— Rahul Mehta</h6>
+            </div>
+            <div class="carousel-item">
+                <p class="text-white fst-italic fs-5 px-5">
+                 <h6 class="text-white">  “Bakehouse combines traditional baking with modern flavors perfectly.
+                    Their products are always fresh, flavorful, and beautifully prepared.
+                     It’s a bakery you can trust for everyday treats and special occasions alike.”
+                 </h6></p>
+                <h6 class="fw-bold mt-3 text-warning">— Neha Patel</h6>
+            </div>
+            <div class="carousel-item">
+                <p class="text-white fst-italic fs-5 px-5">
+                 <h6 class="text-white"> “Every visit to Bakehouse is a delightful experience. 
+                  From soft breads to delicious pastries, everything tastes amazing and freshly made.
+                   The quality never disappoints, and the service is always warm and friendly.”
+                 </h6></p>
+                <h6 class="fw-bold mt-3 text-warning">— Raj Manhotra </h6>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button"
+                data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button"
+                data-bs-target="#testimonialCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</div>
+
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://bakery.app.n8n.cloud/webhook/959ae02a-17cf-40d0-bba0-e9ccd4b7074e/chat'
+	});
+</script>
+
+<script type="module" src="{% static 'js/ogl-animation.js' %}"></script>
+<div class="text-center mt-4">
+            <a href="{% url 'about' %}" class="btn btn-warning px-4 py-2 rounded-pill">
+                Know More
+            </a>
+        </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% include 'pages/footer.html' %}

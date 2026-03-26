@@ -1,0 +1,354 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Bill - Bakehouse</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 10px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #ffbf00;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #ffbf00;
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 1.1em;
+        }
+        .bill-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+        .bill-info h3 {
+            margin: 0 0 10px 0;
+            color: #ffbf00;
+            font-size: 1.3em;
+        }
+        .customer-info, .delivery-info {
+            margin-bottom: 25px;
+        }
+        .customer-info h3, .delivery-info h3 {
+            color: #ffbf00;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+.items-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+/* Header styling */
+.items-table th {
+    background: #ffbf00;
+    color: white;
+    padding: 12px 8px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+/* Top-left corner */
+.items-table th:first-child {
+    border-top-left-radius: 5px;
+}
+
+/* Top-right corner */
+.items-table th:last-child {
+    border-top-right-radius: 5px;
+}
+        .items-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+        .items-table tr:last-child td {
+            border-bottom: none;
+        }
+        .total-row {
+            background: #f8f9fa;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .total-row td {
+            padding: 15px 12px;
+            color: #ffbf00;
+        }
+        .payment-info {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+        .thank-you {
+            background: linear-gradient(135deg, #ffbf00 0%, #ffc107 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 22px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .thank-you h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.8em;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+            .header p {
+                font-size: 1em;
+            }
+            .thank-you {
+                padding: 15px;
+            }
+            .thank-you h2 {
+                font-size: 1.5em;
+            }
+            .bill-info, .customer-info, .delivery-info, .payment-info {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            .bill-info h3, .customer-info h3, .delivery-info h3 {
+                font-size: 1.1em;
+            }
+            .items-table {
+                font-size: 0.85em;
+            }
+            .items-table th, .items-table td {
+                padding: 8px 5px;
+            }
+            .total-row {
+                font-size: 1em;
+            }
+            .footer {
+                font-size: 0.9em;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .thank-you {
+                padding: 12px;
+            }
+            .thank-you h2 {
+                font-size: 1.3em;
+            }
+            .items-table th:nth-child(2),
+            .items-table th:nth-child(3),
+            .items-table td:nth-child(2),
+            .items-table td:nth-child(3) {
+                text-align: center;
+                padding: 6px 3px;
+            }
+            .items-table th:nth-child(4),
+            .items-table td:nth-child(4) {
+                text-align: right;
+                padding: 6px 3px;
+            }
+            .items-table th:first-child,
+            .items-table td:first-child {
+                padding: 6px 3px;
+            }
+            .footer {
+                font-size: 0.8em;
+            }
+        }
+        
+        /* Desktop Responsive Styles */
+        @media screen and (min-width: 769px) {
+            body {
+                max-width: 800px;
+                padding: 20px;
+            }
+            .container {
+                padding: 30px;
+                max-width: 700px;
+                margin: 0 auto;
+            }
+            .header h1 {
+                font-size: 2.5em;
+            }
+            .header p {
+                font-size: 1.1em;
+            }
+            .thank-you h2 {
+                font-size: 1.8em;
+            }
+            .bill-info h3, .customer-info h3, .delivery-info h3 {
+                font-size: 1.3em;
+            }
+            .items-table th, .items-table td {
+                padding: 12px;
+            }
+            .total-row {
+                font-size: 1.1em;
+            }
+        }
+        
+        @media screen and (min-width: 1024px) {
+            body {
+                max-width: 900px;
+            }
+            .container {
+                max-width: 800px;
+                padding: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+       <div class="header"> <h1> Bakehouse</h1> 
+        <p>Thank you for choosing fresh, handmade goodness.</p>
+     </div>
+
+        <div class="thank-you">
+            <h2>Thank You for Your Order!</h2>
+            <p>Your order has been confirmed and is being prepared with love.</p>
+        </div>
+
+        <div class="bill-info">
+            <h3>Bill Information</h3>
+            <p><strong>Bill Number:</strong> #{{ order.id }}</p>
+            <p><strong>Order Date:</strong> {{ order.created_at|date:"F d, Y" }}</p>
+            <p><strong>Order Time:</strong> {{ order.created_at|date:"h:i A" }}</p>
+
+             <p><strong>User Type:</strong>
+        {% if order.user %}
+            {% if order.user.owner_profile %}
+                <span class="badge bg-warning">Owner</span>
+            {% elif order.user.employee_profile %}
+                <span class="badge bg-success">Employee</span>
+            {% else %}
+                <span class="badge bg-primary">Customer</span>
+            {% endif %}
+        {% else %}
+            <span class="badge bg-secondary">Guest</span>
+        {% endif %}
+    </p>
+        </div>
+        <div class="customer-info">
+            <h3>Customer Information</h3>
+            <p><strong>Name:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+            <p><strong>Email:</strong> {{ order.email }}</p>
+            <p><strong>Phone:</strong> {{ order.phone }}</p>
+        </div>
+
+        <div class="delivery-info">
+            <h3>Delivery Address</h3>
+            <p>{{ order.address }}</p>
+            <p>{{ order.city }} - {{ order.pincode }}</p>
+            {% if order.notes %}
+            <p><strong>Order Notes:</strong> {{ order.notes }}</p>
+            {% endif %}
+        </div>
+        <h3>Order Items</h3>
+        <table class="items-table p-2"> 
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th style="text-align: center;">Price</th>
+                    <th style="text-align: center;">Quantity</th>
+                    <th style="text-align: right;">Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.product_name }}</td>
+                    <td style="text-align: center;">Rs.{{ item.price|floatformat:2 }}</td>
+                    <td style="text-align: center;">{{ item.quantity }}</td>
+                    <td style="text-align: right;">Rs.{{ item.subtotal|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="total-row">
+                    <td colspan="3"><strong>Grand Total</strong></td>
+                    <td style="text-align: right;"><strong>Rs.{{ order.total_amount|floatformat:2 }}</strong></td>
+                    </tr>
+                </tbody>
+        </table>
+
+        <div class="payment-info p-4">
+            <h3>Payment Information</h3>
+            <p><strong>Payment Method:</strong> 
+                {% if order.payment_method == 'online' %}
+                    Online Payment
+                {% else %}
+                    Cash on Delivery
+                {% endif %}
+            </p>
+            <p><strong>Order Status:</strong> 
+                <span style="color: #28a745; font-weight: bold;">
+                    {{ order.get_status_display|default:order.status|title }}
+                </span>
+            </p>
+        </div>
+                                                
+        <div class="footer">
+            <p><strong>Bakehouse</strong></p>
+            <p>619 - RK Prime, 6th Floor, Nana Mava Circle, Rajkot</p>
+            <p>For any queries, contact us at: bakehous023@gmail.com</p>
+            <p><small>This is a computer-generated bill.</small></p>
+        </div>
+    </div>
+</body>
+</html>

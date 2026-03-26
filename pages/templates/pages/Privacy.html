@@ -1,0 +1,148 @@
+{% include 'pages/header.html' with title="Bakehouse - Contact" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="{% static 'js/animations.js' %}"></script>
+
+<a href="#" class="to-top">
+    <i class="fas fa-arrow-up"></i> 
+</a>
+<script src="{% static 'js/animations.js' %}"></script>
+<script>
+const toTop = document.querySelector(".to-top");
+let isScrolling = false;
+let scrollTimeout;
+
+window.addEventListener("scroll", () => {
+    if (!isScrolling) {
+        window.requestAnimationFrame(() => {
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollPosition > 300) {
+                toTop.classList.add("to-top-active");
+            } else {
+                toTop.classList.remove("to-top-active");
+            }
+            
+            isScrolling = false;
+        });
+        isScrolling = true;
+    }
+});
+
+toTop.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    const startPosition = window.pageYOffset;
+    const targetPosition = 0;
+    const distance = targetPosition - startPosition;
+    const duration = 1100;
+    let start = null;
+    
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    
+    function animateScroll(currentTime) {
+        if (start === null) start = currentTime;
+        const timeElapsed = currentTime - start;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        const easeProgress = easeInOutCubic(progress);
+        const currentPosition = startPosition + (distance * easeProgress);
+        
+        window.scrollTo(0, currentPosition);
+        
+        if (timeElapsed < duration) {
+            requestAnimationFrame(animateScroll);
+        } else {
+            window.scrollTo(0, 0);
+        }
+    }
+    
+    requestAnimationFrame(animateScroll);
+});
+
+toTop.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toTop.click();
+    }
+});
+</script>
+<link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+<script type="module">
+	import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+	createChat({
+		webhookUrl: 'https://bakery.app.n8n.cloud/webhook/959ae02a-17cf-40d0-bba0-e9ccd4b7074e/chat'
+	});
+</script>
+
+<div class="container-fluid px-0">
+    <img 
+        src="{% static 'Privacy.png' %}" 
+        class="img-fluid w-100"
+        alt="Privacy Policy"
+    >
+</div>
+
+<!-- Content Section -->
+<div class="container my-5">
+    <div class="bg-white p-4 p-md-5 rounded shadow-sm">
+
+        <p class="text-muted">
+           BAKEHOUSE CAKE & PASTRY respects your privacy and is committed to protecting any information shared on this website. This website is a sample project and does not collect or store real personal data. Any information entered is used only for testing and display purposes.
+        </p>
+
+        <hr>
+
+        <h4 class="mt-4">Information We Collect</h4>
+        <p>
+         Personal Information
+This website may request basic details such as name, email address, phone number, or delivery address for demonstration purposes only. No real user data is stored, processed, or shared.</p>
+
+        <h4 class="mt-4">Use of Information</h4>
+        <p>
+         Personal Information
+This website may request basic details such as name, email address, phone number, or delivery address for demonstration purposes only. No real user data is stored, processed, or shared.
+
+Cookies & Usage Data
+Sample cookies may be used to improve the user experience and demonstrate website functionality. These cookies do not track real users or collect sensitive information.
+
+Log Data
+Basic log information may be displayed for testing, such as browser type or page visits. This data is not monitored or stored permanently.</p>
+
+        <h4 class="mt-4">Data Security</h4>
+        <p>
+          Sample Security Measures
+Basic security practices are shown for educational purposes. No real financial or personal data should be entered on this website.
+
+Payment Information</p>
+
+     
+        <h4 class="mt-4">Data Sharing and Disclosure</h4>
+        <p>
+          No Third-Party Sharing
+No personal information is shared with third-party services. Any integrations shown are mock or test-based.
+
+Legal Disclosure
+Since this is a demo website, no legal data requests apply.</p>
+
+           <h4 class="mt-4">Intellectual Property</h4>
+        <p>
+          All images, text, logos, and designs used on this website are for sample and educational purposes only. Any resemblance to real brands or businesses is purely coincidental.</p>
+
+           <h4 class="mt-4">Your Rights and Choices</h4>
+        <p>
+           Access & Removal
+Users may refresh or reset the website to clear any sample data entered.
+
+Cookies Control
+Cookies used on this website are non-functional and may be disabled without affecting core functionality.
+
+This website is a demo project created for learning, testing, or presentation purposes only. It is not intended for real commercial use.</p>
+
+  
+    </div>
+</div>
+{% include 'pages/footer.html' %}
