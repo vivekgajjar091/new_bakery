@@ -8,9 +8,11 @@ load_dotenv(BASE_DIR / '.env')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
-
-
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'newbakery-production.up.railway.app',
+]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
