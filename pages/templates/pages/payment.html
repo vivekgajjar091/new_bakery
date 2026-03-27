@@ -96,6 +96,244 @@ body::after {
     color: white !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .glass-card {
+        margin-bottom: 20px;
+    }
+    
+    .row.g-4 {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    body::after {
+        width: 600px;
+        height: 500px;
+        filter: blur(100px);
+    }
+    
+    .container.my-5 {
+        margin-top: 2rem !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    .glass-card {
+        padding: 1.5rem !important;
+        border-radius: 12px;
+    }
+    
+    .glass-card .p-4 {
+        padding: 1.5rem !important;
+    }
+    
+    .bg-text-white.py-3,
+    .bg-drk.text-white.py-3 {
+        padding: 1rem !important;
+    }
+    
+    .bg-text-white.py-3 h5,
+    .bg-drk.text-white.py-3 h5 {
+        font-size: 1.1rem;
+    }
+    
+    .form-control {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 0.75rem;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .modal-dialog {
+        margin: 1rem;
+        max-width: calc(100% - 2rem);
+    }
+    
+    .modal-content {
+        border-radius: 0.75rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem !important;
+    }
+    
+    .modal-header {
+        padding: 1rem !important;
+    }
+    
+    .modal-footer {
+        padding: 1rem !important;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .modal-footer .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    body::after {
+        width: 400px;
+        height: 350px;
+        filter: blur(80px);
+        top: 25%;
+    }
+    
+    .container.my-5 {
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+        padding: 0 10px;
+    }
+    
+    .glass-card {
+        padding: 1rem !important;
+        margin-bottom: 1rem;
+    }
+    
+    .glass-card .p-4 {
+        padding: 1rem !important;
+    }
+    
+    .bg-text-white.py-3,
+    .bg-drk.text-white.py-3 {
+        padding: 0.75rem !important;
+    }
+    
+    .bg-text-white.py-3 h5,
+    .bg-drk.text-white.py-3 h5 {
+        font-size: 1rem;
+        margin-bottom: 0;
+    }
+    
+    .row {
+        margin: 0;
+    }
+    
+    .row > * {
+        padding: 0.5rem;
+    }
+    
+    .col-md-6 {
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .form-control {
+        padding: 0.625rem;
+        font-size: 16px;
+    }
+    
+    textarea.form-control {
+        min-height: 80px;
+    }
+    
+    .btn-lg {
+        padding: 0.625rem 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .d-flex.justify-content-between.align-items-center {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.5rem;
+    }
+    
+    .d-flex.justify-content-between.align-items-center strong {
+        align-self: flex-end;
+    }
+    
+    .modal-dialog {
+        margin: 0.5rem;
+        max-width: calc(100% - 1rem);
+    }
+    
+    .modal-body {
+        padding: 1rem !important;
+    }
+    
+    .modal-header {
+        padding: 0.75rem !important;
+    }
+    
+    .modal-footer {
+        padding: 0.75rem !important;
+    }
+    
+    .text-center .d-inline-flex {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .text-center .d-inline-flex i {
+        font-size: 1.8rem !important;
+    }
+    
+    .row.g-2 .col-6 {
+        padding: 0.25rem;
+    }
+    
+    .bg-light.p-3 {
+        padding: 0.75rem !important;
+    }
+}
+
+@media (max-width: 399.98px) {
+    .container.my-5 {
+        padding: 0 5px;
+    }
+    
+    .glass-card {
+        padding: 0.75rem !important;
+    }
+    
+    .glass-card .p-4 {
+        padding: 0.75rem !important;
+    }
+    
+    .row > * {
+        padding: 0.25rem;
+    }
+    
+    .form-label {
+        font-size: 0.85rem;
+    }
+    
+    .form-control {
+        padding: 0.5rem;
+        font-size: 15px;
+    }
+    
+    .btn-lg {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .modal-body {
+        padding: 0.75rem !important;
+    }
+    
+    .modal-header {
+        padding: 0.5rem !important;
+    }
+    
+    .modal-footer {
+        padding: 0.5rem !important;
+    }
+}
 </style>
 <div class="container my-5">
     {% if messages %}
