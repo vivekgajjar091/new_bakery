@@ -8,22 +8,19 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Security
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-change-this-in-production')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "0.0.0.0",
-    ".up.railway.app",
-]
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    '127.0.0.1,localhost,0.0.0.0,.up.railway.app,newbakery-production.up.railway.app'
+).split(',')
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://*.up.railway.app",
-    "https://newbakery-production.up.railway.app",
-]
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    'CSRF_TRUSTED_ORIGINS',
+    'https://newbakery-production.up.railway.app,https://*.up.railway.app'
+).split(',')
+
 
 # Application definition
 INSTALLED_APPS = [
