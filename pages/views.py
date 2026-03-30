@@ -814,7 +814,7 @@ def delete_employee(request, employee_id):
 
 def home(request):
     trending_products = ProductModel.objects.filter(is_trending=True, active=True)
-    best_selling_products = ProductModel.get_best_selling_products(limit=5)
+    best_selling_products = ProductModel.get_best_selling_products(limit=4)
     special_products = ProductModel.objects.filter(is_special=True, active=True)
     
     return render(request, "pages/home.html", {
